@@ -17,7 +17,7 @@ import (
 )
 import (
 	"androidappServer/config"
-	"androidappServer/controller"
+	"androidappServer/api"
 )
 
 func main() {
