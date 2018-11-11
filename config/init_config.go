@@ -31,10 +31,9 @@ type APIServer struct {
 }
 
 var (
-	cfg *Config
+	cfg  *Config
 	once sync.Once
 )
-
 
 func InitConfig() *Config {
 	once.Do(func() {

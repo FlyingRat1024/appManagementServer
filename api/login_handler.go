@@ -23,7 +23,7 @@ func LoginHandler(ctx *gin.Context) {
 	//todo
 	resBody := responseBody{
 		Status: 0,
-		Msg:    "success",
+		Msg:    "",
 		Param:  "",
 	}
 	var reqBody requestBody
