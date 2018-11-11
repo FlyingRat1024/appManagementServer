@@ -1,4 +1,4 @@
 *.xml
 .idea/
 androidappServer
-config.toml
+config.*

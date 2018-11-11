@@ -4,6 +4,7 @@ import (
 	"androidappServer/config"
 	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type DBWork struct {
