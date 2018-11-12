@@ -2,7 +2,7 @@ package internal
 
 import mysql "androidappServer/db"
 
-func Login(user string, password string) (bool, error) {
+func Login(employeeID string, password string) (bool, error) {
 	db, err := mysql.GetDB()
 	if err != nil {
 		return false, err
@@ -12,9 +12,10 @@ func Login(user string, password string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	result, err := stmt.Query(user, password)
-	if result.Next() {
+	rows, err := stmt.Query(employeeID, password)
+	if rows.Next() {
 		return true, nil
 	}
+	defer rows.Close()
 	return false, nil
 }
