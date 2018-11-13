@@ -1,9 +1,9 @@
-# appManagementServer
+# app Server
+	为企业android应用提供后端接口服务
 
-移动后端接口API
-
-注：接口全部以json格式发送接收
-
+# API
+移动后端接口api
+注：参数请求返回都以json格式
 
 ###  登录注册部分
 - 登录
@@ -132,7 +132,7 @@
   ```
 ### 材料入库
 - 新增材料（入仓库）
-	```
+```
 	router: /material/in_warehouse
 	method: POST
 
@@ -149,4 +149,72 @@
  	 msg: "获取成功/失败,原因."
  	 param: ""
   }
-    ```
+```
+
+### 材料领取
+- 填写领取单
+```
+	router: /material/receive/write_table
+	method: POST
+
+	request:{
+		 receiver : 领取人id
+		 material_id: 材料id
+		 num: "领取数量"
+		 /*
+	     * name : "材料名称"
+	     * description: "规格"
+	     * unit: “单位”
+	     * provider: "提供商"
+	     */
+  }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "填写成功/失败,原因."
+ 	 param: ""
+  }
+```
+- 查看某一领取单
+```
+	router: /material/receive/table
+	method: POST
+
+	request:{
+		 table_id: "领料单的id"
+  }
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "成功/失败,原因."
+ 	 param: {
+ 	 	table_id: 领料单id
+ 	 	reciever_name: 领取人名字
+ 	 	write_time: 填写时间
+ 	 	material_id: 材料id
+ 	 	material_name: ”材料名字“
+ 	 	material_size: ”材料规格“
+ 	 	material_provider: "提供商"
+ 	 	material_num: 材料数量
+	}
+  }
+```
+- 查看领取单列表
+```
+router: /material/receive/table_list
+	method: POST
+	request:{
+	}
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "成功/失败,原因."
+ 	 param: [
+ 	 {
+ 	 	table_id: 领料单id
+ 	 	reciever_name: 领取人名字
+ 	 	write_time: 填写时间
+ 	 	material_name: 材料名
+  },
+  {}
+  ...
+  ]
+```
