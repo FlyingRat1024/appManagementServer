@@ -5,11 +5,13 @@ import (
 	"androidappServer/pkg/structs"
 )
 
-type receiveBody struct {
+type wirteReceiveBody struct {
 	structs.Material
+	ReceiverID int `json:"receiver"`
 
 }
 
-func ReceiveHandler(ctx *gin.Context){
-
+func WriteReceiveHandler(ctx *gin.Context){
+	var reqBody wirteReceiveBody
+	ctx.BindJSON(&reqBody)
 }

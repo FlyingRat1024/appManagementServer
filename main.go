@@ -10,6 +10,7 @@ Modification history
 package main
 
 import (
+	"androidappServer/api/material"
 	"fmt"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-contrib/cors"
@@ -26,11 +27,14 @@ func main() {
 	serverAddr := fmt.Sprintf("%s:%d", cfg.API.Host, cfg.API.Port)
 	router := gin.Default()
 	router.Use(cors.Default())
-	//
+	// app
 	loginRouter := router.Group("/app")
 	loginRouter.Handle("POST", "/login", Login.LoginHandler)
+	// material
 	materialRouter := router.Group("/material")
-	materialRouter.Handle("POST", "/receive")
+	receive := materialRouter.Group("/receive")
+	receive.Handle("POST", "/write_table", material.WriteReceiveHandler)
+	//
 
 	//
 	err := router.Run(serverAddr)
