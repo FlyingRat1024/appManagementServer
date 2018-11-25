@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func WriteReceiveHandler(ctx *gin.Context){
+func WriteReceiveHandler(ctx *gin.Context) {
 	var table material.RecieveTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
@@ -23,7 +23,7 @@ func WriteReceiveHandler(ctx *gin.Context){
 	}
 	//store db
 	err := material.CreateReceiveTable(&table)
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store receive table to database error"
 		logger.Error("store receive table to database error", err)
@@ -39,7 +39,7 @@ func ReceiveListhandler(ctx *gin.Context) {
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
 	result, err := material.QueryReceiveTableList()
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query list failed"
 		logger.Error("query list failed, error message: ", err)
@@ -56,19 +56,19 @@ func ReceiveDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
 	tableIDStr := ctx.Query("table_id")
-	if tableIDStr == ""{
+	if tableIDStr == "" {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
-	tableID,err := strconv.Atoi(tableIDStr)
-	if err != nil{
+	tableID, err := strconv.Atoi(tableIDStr)
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
 	result, err := material.QueryReceiveDetail(tableID)
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query detail failed"
 		logger.Error("query apply detail failed, error message: ", err)

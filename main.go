@@ -9,7 +9,10 @@ Modification history
 */
 package main
 
-import "fmt"
+import (
+	"androidappServer/api/warehouse"
+	"fmt"
+)
 
 import (
 	"github.com/donnie4w/go-logger/logger"
@@ -42,6 +45,10 @@ func main() {
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
 	//
+	repoRouter := router.Group("/warehouse")
+	repoRouter.POST("/in/write_table", warehouse.WriteInWarehouseHandler)
+	repoRouter.POST("/out/write_table", warehouse.WriteOutWarehouseHandler)
+
 	err := router.Run(serverAddr)
 	if err != nil {
 		logger.Error("run server error!")

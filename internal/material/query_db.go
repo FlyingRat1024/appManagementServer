@@ -32,7 +32,7 @@ func QueryApplyList() (string, error) {
 }
 
 // 查询申请单详细信息
-func QueryApplyDetail(tableID int) (string, error){
+func QueryApplyDetail(tableID int) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
@@ -62,7 +62,7 @@ func QueryApplyDetail(tableID int) (string, error){
 }
 
 // 查询领料单列表
-func QueryReceiveTableList() (string, error){
+func QueryReceiveTableList() (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
@@ -88,7 +88,7 @@ func QueryReceiveTableList() (string, error){
 }
 
 // 领料单详细信息
-func QueryReceiveDetail(tableID int) (string, error){
+func QueryReceiveDetail(tableID int) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
@@ -96,14 +96,15 @@ func QueryReceiveDetail(tableID int) (string, error){
 	defer mysql.Close()
 	sqlfmt := "SELECT receive.table_id, receive.create_time, user.employee_name as receiver, receive.material_name," +
 		"receive.material_unit, receive.material_provider, receive.receive_num " +
-		"FROM (SELECT receive_table.id as table_id,receive_table.receiver as user_id," +
+		"FROM (SELECT receive_table.id as table_id,receive_table.receiver_id," +
 		"receive_table.create_time, material.name as material_name, receive_material.receive_num," +
 		"material.unit as material_unit, material.provider as material_provide " +
 		"FROM receive_material " +
 		"JOIN (select id,receiver, create_time from material_receive_table where id = 1) as receive_table " +
 		"ON receive_table.id = receive_material.table_id " +
 		"JOIN material ON material.id = receive_material.material_id ) " +
-		"AS receive JOIN user ON user.id = receive.user_id "
+		"AS receive " +
+		"JOIN user ON user.id = receive.receiver_id "
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err

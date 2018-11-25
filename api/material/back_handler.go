@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func WriteBackTableHandler(ctx *gin.Context)  {
+func WriteBackTableHandler(ctx *gin.Context) {
 	var table material.BackTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
@@ -22,7 +22,7 @@ func WriteBackTableHandler(ctx *gin.Context)  {
 	}
 	//store db
 	err := material.CreateBackTable(&table)
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store back table to database error"
 		logger.Error("store back table to database error", err)

@@ -40,7 +40,7 @@ func ApplyListhandler(ctx *gin.Context) {
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
 	result, err := material.QueryApplyList()
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query list failed"
 		logger.Error("query list failed, error message: ", err)
@@ -57,19 +57,19 @@ func ApplyDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
 	tableIDStr := ctx.Query("table_id")
-	if tableIDStr == ""{
+	if tableIDStr == "" {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
-	tableID,err := strconv.Atoi(tableIDStr)
-	if err != nil{
+	tableID, err := strconv.Atoi(tableIDStr)
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
 	result, err := material.QueryApplyDetail(tableID)
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query detail failed"
 		logger.Error("query apply detail failed, error message: ", err)
