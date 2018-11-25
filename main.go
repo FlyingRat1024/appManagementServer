@@ -9,15 +9,16 @@ Modification history
 */
 package main
 
+import "fmt"
+
 import (
-	"androidappServer/api/material"
-	"fmt"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 import (
 	"androidappServer/api/Login"
+	"androidappServer/api/material"
 	"androidappServer/config"
 )
 
@@ -33,6 +34,8 @@ func main() {
 	// material
 	materialRouter := router.Group("/material")
 	materialRouter.POST("/apply/write_table", material.WriteApplyTableHandler)
+	materialRouter.GET("/apply/", material.ApplyListhandler)
+	materialRouter.GET("/apply/detail", material.ApplyDetailHandler)
 	materialRouter.POST("/receive/write_table", material.WriteReceiveHandler)
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
