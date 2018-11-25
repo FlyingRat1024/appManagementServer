@@ -55,10 +55,8 @@
   method: POST
 
   request:{
-  	material_name: "电缆"
-  	material_size: "规格"
-  	material_num: "数量"
-  	applier: "申请人id"
+  	material_id: 123
+  	applier: 100
   }
 
   response (成功):{
@@ -74,7 +72,7 @@
   ```
 - 申请单 列表
 ```
-  router: /apply/list
+  router: /apply/
   method: GET
 
   request:{
@@ -154,19 +152,13 @@
 ### 材料领取
 - 填写领取单
 ```
-	router: /material/receive/write_table
-	method: POST
+router: /material/receive/write_table
+method: POST
 
-	request:{
+request:{
 		 receiver : 领取人id
 		 material_id: 材料id
 		 num: "领取数量"
-		 /*
-	     * name : "材料名称"
-	     * description: "规格"
-	     * unit: “单位”
-	     * provider: "提供商"
-	     */
   }
 
    response(成功/失败):{
@@ -177,8 +169,8 @@
 ```
 - 查看某一领取单
 ```
-	router: /material/receive/table
-	method: POST
+	router: /material/receive/detail
+	method: GET
 
 	request:{
 		 table_id: "领料单的id"
@@ -200,8 +192,8 @@
 ```
 - 查看领取单列表
 ```
-router: /material/receive/table_list
-	method: POST
+router: /material/receive/
+	method: GET
 	request:{
 	}
    response(成功/失败):{
@@ -217,4 +209,41 @@ router: /material/receive/table_list
   {}
   ...
   ]
+```
+### 材料归还
+- 填写归还单
+```
+router: /material/back/write_table
+method: POST
+
+request:{
+		 table_id : 领料单id
+		 backer: 归还人id
+		 num: "归还数量"
+  }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "填写成功/失败,原因."
+ 	 param: ""
+  }
+```
+
+### 材料审核
+- 填写审核
+```
+router: /material/check/write_table
+method: POST
+
+request:{
+		 table_id : 领料单id
+		 checker: 审核人id
+		 num: "审核数量"
+  }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "填写成功/失败,原因."
+ 	 param: ""
+  }
 ```
