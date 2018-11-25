@@ -2,7 +2,7 @@ package material
 
 import (
 	"androidappServer/db"
-	"androidappServer/internal/utils"
+	"androidappServer/pkg/utils"
 )
 
 func QueryApplyList() (string, error) {
