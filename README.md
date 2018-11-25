@@ -7,7 +7,7 @@
 
 ###  登录注册部分
 - 登录
-   ```
+```
   router: /app/login
   method: POST
 
@@ -26,9 +26,9 @@
  	 msg: "登录失败, 原因.."
  	 param: ""
   }
-  ```
+```
 - 注册 (暂时应该用不到)
-  ```
+```
   router: /app/register
   method: POST
 
@@ -47,7 +47,7 @@
  	 msg: "注册失败,原因."
  	 param: ""
   }
-  ```
+```
 ### 物料申请
 - 填写申请表
 ```
@@ -69,7 +69,7 @@
  	 msg: "提交失败,原因."
  	 param: ""
   }
-  ```
+```
 - 申请单 列表
 ```
   router: /apply/
@@ -102,7 +102,7 @@
  	 msg: "获取失败,原因."
  	 param: ""
   }
-  ```
+```
 - 查看某申请表详细内容
 ```
   router: /apply/detail
@@ -127,7 +127,7 @@
  	 msg: "获取失败,原因."
  	 param: ""
   }
-  ```
+```
 ### 材料入库
 - 新增材料（入仓库）
 ```
@@ -135,6 +135,7 @@
 	method: POST
 
 	request:{
+	     writer: 填写人id
 	     name : "材料名称"
 	     description: "规格"
 	     unit: “单位”
@@ -148,7 +149,24 @@
  	 param: ""
   }
 ```
+### 材料出库
+- 填写入库单
+```
+	router: /warehouse/in
+	method: POST
 
+	request:{
+	     writer: 填写人id
+	     material_id: 材料id
+	     num: 数量
+  }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "获取成功/失败,原因."
+ 	 param: ""
+  }
+```
 ### 材料领取
 - 填写领取单
 ```
