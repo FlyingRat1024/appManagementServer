@@ -11,6 +11,7 @@ func SqlRows2Json(rows *sql.Rows) (string, error) {
 		return "", err
 	}
 	count := len(columns)
+	tableData := make(map[string]interface{})
 	values := make([]interface{}, count)
 	valuePtrs := make([]interface{}, count)
 	if rows.Next() {
@@ -29,9 +30,10 @@ func SqlRows2Json(rows *sql.Rows) (string, error) {
 				v = val
 			}
 			entry[col] = v
+			tableData[col] = v
 		}
 	}
-	jsonData, err := json.Marshal(values)
+	jsonData, err := json.Marshal(tableData)
 	if err != nil {
 		return "", err
 	}
