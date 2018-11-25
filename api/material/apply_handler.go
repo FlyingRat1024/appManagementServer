@@ -7,6 +7,7 @@ import (
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 //填写申请表
@@ -55,8 +56,14 @@ func ApplyListhandler(ctx *gin.Context) {
 func ApplyDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
-	tableID := ctx.GetInt("table_id")
-	if tableID == 0{
+	tableIDStr := ctx.Query("table_id")
+	if tableIDStr == ""{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
+	tableID,err := strconv.Atoi(tableIDStr)
+	if err != nil{
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
