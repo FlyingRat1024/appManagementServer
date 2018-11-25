@@ -37,6 +37,8 @@ func main() {
 	materialRouter.GET("/apply/", material.ApplyListhandler)
 	materialRouter.GET("/apply/detail", material.ApplyDetailHandler)
 	materialRouter.POST("/receive/write_table", material.WriteReceiveHandler)
+	materialRouter.GET("/receive/", material.ReceiveListhandler)
+	materialRouter.GET("/receive/detail", material.ReceiveDetailHandler)
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
 	//

@@ -88,7 +88,7 @@ func QueryReceiveTableList() (string, error){
 }
 
 // 领料单详细信息
-func QueryReceiveDetail(tableID string) (string, error){
+func QueryReceiveDetail(tableID int) (string, error){
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
