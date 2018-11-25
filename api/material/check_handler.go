@@ -9,23 +9,23 @@ import (
 	"net/http"
 )
 
-func WriteBackTableHandler(ctx *gin.Context)  {
-	var table material.BackTableBody
+func WriteCheckTableHandler(ctx *gin.Context) {
+	var table material.CheckTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
 	defer ctx.JSON(http.StatusAccepted, &resBody)
 	// check param
-	if !material.CheckBackTableParam(&table) {
+	if !material.CheckCheckTableParam(&table) {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
 	//store db
-	err := material.CreateBackTable(&table)
+	err := material.CreateCheckTable(&table)
 	if err != nil{
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "store back table to database error"
-		logger.Error("store back table to database error", err)
+		resBody.Msg = "store check table to database error"
+		logger.Error("store check table to database error", err)
 		return
 	}
 	resBody.Status = status.StatusSuccess

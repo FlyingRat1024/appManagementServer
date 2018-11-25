@@ -32,10 +32,10 @@ func main() {
 	loginRouter.Handle("POST", "/login", Login.LoginHandler)
 	// material
 	materialRouter := router.Group("/material")
-	receive := materialRouter.Group("/receive")
-	receive.Handle("POST", "/write_table", material.WriteReceiveHandler)
-	//
-
+	materialRouter.POST("/apply/write_table", material.WriteApplyTableHandler)
+	materialRouter.POST("/receive/write_table", material.WriteReceiveHandler)
+	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
+	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
 	//
 	err := router.Run(serverAddr)
 	if err != nil {
