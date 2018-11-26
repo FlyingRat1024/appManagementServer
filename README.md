@@ -56,7 +56,8 @@
 
   request:{
   	material_id: 123
-  	applier: 100
+  	applier: 申请人id
+  	num:100
   }
 
   response (成功):{
@@ -236,6 +237,7 @@ method: POST
 
 request:{
 		 table_id : 领料单id
+		 material_id: 材料id
 		 backer: 归还人id
 		 num: "归还数量"
   }
@@ -256,6 +258,7 @@ method: POST
 request:{
 		 table_id : 领料单id
 		 checker: 审核人id
+		 material_id: 材料id
 		 num: "审核数量"
   }
 
