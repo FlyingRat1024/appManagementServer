@@ -2,6 +2,7 @@ package Login
 
 import (
 	"fmt"
+	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -31,7 +32,8 @@ func LoginHandler(ctx *gin.Context) {
 	ctx.BindJSON(&reqBody)
 	flag, err := internal.Login(reqBody.ID, reqBody.Password)
 	if err != nil {
-		resBody.Msg = fmt.Sprintf("error: %s", err.Error())
+		logger.Error("login error, error message: ", err)
+		resBody.Msg = fmt.Sprintf("login error: %s", err)
 		ctx.JSON(http.StatusOK, resBody)
 		return
 	}
