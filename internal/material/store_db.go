@@ -102,7 +102,7 @@ func CreateBackTable(body *BackTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "update set material_receive_table set back_user = ? and back = 1 and back_time = now() where id = ?"
+	sqlfmt := "update material_receive_table set back_user = ?, back = 1, back_time = now() where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err
@@ -142,7 +142,7 @@ func CreateCheckTable(body *CheckTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "update set material_receive_table set checker = ? and `check` = 1 and check_time = now() where id = ?"
+	sqlfmt := "update material_receive_table set checker = ?, `check` = 1, check_time = now() where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err

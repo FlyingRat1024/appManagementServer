@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 import (
-	"androidappServer/api/Login"
+	"androidappServer/api/login"
 	"androidappServer/api/material"
 	"androidappServer/config"
 )
@@ -33,7 +33,7 @@ func main() {
 	router.Use(cors.Default())
 	// app
 	loginRouter := router.Group("/app")
-	loginRouter.Handle("POST", "/login", Login.LoginHandler)
+	loginRouter.Handle("POST", "/login", login.LoginHandler)
 	// material
 	materialRouter := router.Group("/material")
 	materialRouter.POST("/apply/write_table", material.WriteApplyTableHandler)
