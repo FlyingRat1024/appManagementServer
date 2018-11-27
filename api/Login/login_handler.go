@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 import (
-	"androidappServer/internal"
+	"androidappServer/internal/login"
 	"androidappServer/pkg/status"
 )
 
 type requestBody struct {
-	ID       string `json:"id"`
+	ID       string `json:"userID"`
 	Password string `json:"password"`
 }
 
@@ -30,7 +30,7 @@ func LoginHandler(ctx *gin.Context) {
 	}
 	var reqBody requestBody
 	ctx.BindJSON(&reqBody)
-	flag, err := internal.Login(reqBody.ID, reqBody.Password)
+	flag, err := login.Login(reqBody.ID, reqBody.Password)
 	if err != nil {
 		logger.Error("login error, error message: ", err)
 		resBody.Msg = fmt.Sprintf("login error: %s", err)

@@ -1,4 +1,4 @@
-package internal
+package login
 
 import mysql "androidappServer/db"
 
@@ -13,9 +13,12 @@ func Login(employeeID string, password string) (bool, error) {
 		return false, err
 	}
 	rows, err := stmt.Query(employeeID, password)
+	if err != nil{
+		return false, err
+	}
+	defer rows.Close()
 	if rows.Next() {
 		return true, nil
 	}
-	defer rows.Close()
 	return false, nil
 }
