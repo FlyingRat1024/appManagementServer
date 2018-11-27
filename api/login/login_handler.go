@@ -1,4 +1,4 @@
-package Login
+package login
 
 import (
 	"fmt"
@@ -29,7 +29,13 @@ func LoginHandler(ctx *gin.Context) {
 		Param:  "",
 	}
 	var reqBody requestBody
-	ctx.BindJSON(&reqBody)
+	err := ctx.BindJSON(&reqBody)
+	if err != nil{
+		logger.Error("parse request error, json error, error message: ", err)
+		resBody.Msg = "login error, cant't parse request parameter, please check your json string"
+		ctx.JSON(http.StatusOK, resBody)
+		return
+	}
 	flag, err := login.Login(reqBody.ID, reqBody.Password)
 	if err != nil {
 		logger.Error("login error, error message: ", err)
@@ -43,7 +49,7 @@ func LoginHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, resBody)
 		return
 	}
-	resBody.Msg = "login failed"
+	resBody.Msg = "login failed, user not found or password error"
 	resBody.Param = reqBody
 	ctx.JSON(http.StatusOK, resBody)
 	return
