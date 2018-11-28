@@ -19,7 +19,13 @@
   response (成功):{
  	 status: 1
  	 msg: "登录成功"
- 	 param:""
+ 	 param:{
+ 	    "employee_id":"123456",
+ 	    "employee_name":"admin",
+ 	    "id":1,
+ 	    "position":"root",
+ 	    "sex":"male"
+ 	 }
   }
    response(失败):{
  	 status: 0
