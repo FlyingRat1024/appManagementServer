@@ -117,3 +117,26 @@ func QueryReceiveDetail(tableID int) (string, error) {
 	jsonStr, err := utils.SqlRows2Json(rows)
 	return jsonStr, err
 }
+
+// 获取材料列表
+func GetMaterialList () (string, error) {
+	db, err := db.GetDB()
+	if err != nil{
+		return "", err
+	}
+	sqlfmt := "select id, name, unit, provider, description from material"
+	stmt, err := db.Prepare(sqlfmt)
+	if err != nil{
+		return "", err
+	}
+	rows, err := stmt.Query()
+	if err != nil{
+		return "", err
+	}
+	defer rows.Close()
+	jsonStr, err := utils.SqlRows2JsonList(rows)
+	if err != nil{
+		return "", err
+	}
+	return jsonStr, nil
+}

@@ -36,6 +36,7 @@ func main() {
 	loginRouter.Handle("POST", "/login", login.LoginHandler)
 	// material
 	materialRouter := router.Group("/material")
+	materialRouter.GET("/", material.MaterialListHandler)
 	materialRouter.POST("/apply/write_table", material.WriteApplyTableHandler)
 	materialRouter.GET("/apply/", material.ApplyListhandler)
 	materialRouter.GET("/apply/detail", material.ApplyDetailHandler)
