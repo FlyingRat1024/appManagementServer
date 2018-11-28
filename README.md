@@ -61,9 +61,17 @@
   method: POST
 
   request:{
-  	material_id: 123
-  	applier: 申请人id
-  	num:100
+    applier: 申请人id
+  	material:[
+            {
+            material_id: 材料id
+                num: "领取数量"
+            },
+            {
+                material_id: 材料id
+                num: "领取数量"
+            }
+        ]
   }
 
   response (成功):{
@@ -163,10 +171,18 @@
 	method: POST
 
 	request:{
-	     writer: 填写人id
-	     material_id: 材料id
-	     num: 数量
-  }
+	    writer: 填写人id
+	    material:[
+            {
+                material_id: 材料id
+                num: "领取数量"
+            },
+            {
+                material_id: 材料id
+                num: "领取数量"
+            }
+        ]
+    }
 
    response(成功/失败):{
  	 status: 1/0
@@ -181,16 +197,24 @@ router: /material/receive/write_table
 method: POST
 
 request:{
-		 receiver : 领取人id
-		 material_id: 材料id
-		 num: "领取数量"
-  }
+    receiver : 领取人id
+    material:[
+        {
+            material_id: 材料id
+            num: "领取数量"
+        },
+        {
+            material_id: 材料id
+            num: "领取数量"
+        }
+    ]
+ }
 
-   response(成功/失败):{
+response(成功/失败):{
  	 status: 1/0
  	 msg: "填写成功/失败,原因."
  	 param: ""
-  }
+}
 ```
 - 查看某一领取单
 ```
@@ -242,11 +266,11 @@ router: /material/back/write_table
 method: POST
 
 request:{
-		 table_id : 领料单id
-		 material_id: 材料id
-		 backer: 归还人id
-		 num: "归还数量"
-  }
+        table_id : 领料单id
+        material_id: 材料id
+        backer: 归还人id
+        num: "归还数量"
+    }
 
    response(成功/失败):{
  	 status: 1/0
@@ -262,16 +286,16 @@ router: /material/check/write_table
 method: POST
 
 request:{
-		 table_id : 领料单id
-		 checker: 审核人id
-		 material_id: 材料id
-		 num: "审核数量"
-  }
+        table_id : 领料单id
+        checker: 审核人id
+        material_id: 材料id
+        num: "审核数量"
+    }
 
-   response(成功/失败):{
- 	 status: 1/0
- 	 msg: "填写成功/失败,原因."
- 	 param: ""
+    response(成功/失败):{
+        status: 1/0
+        msg: "填写成功/失败,原因."
+        param: ""
   }
 ```
 
