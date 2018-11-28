@@ -36,21 +36,16 @@ func LoginHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, resBody)
 		return
 	}
-	flag, err := login.Login(reqBody.ID, reqBody.Password)
+	result, err := login.Login(reqBody.ID, reqBody.Password)
 	if err != nil {
 		logger.Error("login error, error message: ", err)
 		resBody.Msg = fmt.Sprintf("login error: %s", err)
 		ctx.JSON(http.StatusOK, resBody)
 		return
 	}
-	if flag {
-		resBody.Status = status.StatusSuccess
-		resBody.Msg = "login success"
-		ctx.JSON(http.StatusOK, resBody)
-		return
-	}
-	resBody.Msg = "login failed, user not found or password error"
-	resBody.Param = reqBody
+	resBody.Status = status.StatusSuccess
+	resBody.Msg = "login success"
+	resBody.Param = result
 	ctx.JSON(http.StatusOK, resBody)
 	return
 }

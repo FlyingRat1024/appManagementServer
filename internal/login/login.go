@@ -1,24 +1,28 @@
 package login
 
-import mysql "androidappServer/db"
+import (
+	mysql "androidappServer/db"
+	"androidappServer/pkg/utils"
+)
 
-func Login(employeeID string, password string) (bool, error) {
+func Login(employeeID string, password string) (string, error) {
 	db, err := mysql.GetDB()
 	if err != nil {
-		return false, err
+		return "", err
 	}
 	defer db.Close()
-	stmt, err := db.Prepare("select id from user where employee_id = ? and password = ?")
+	stmt, err := db.Prepare("select id, employee_id, employee_name, sex, position  from user where employee_id = ? and password = ?")
 	if err != nil {
-		return false, err
+		return "", err
 	}
 	rows, err := stmt.Query(employeeID, password)
 	if err != nil{
-		return false, err
+		return "", err
 	}
 	defer rows.Close()
-	if rows.Next() {
-		return true, nil
+	jsonStr, err := utils.SqlRows2Json(rows)
+	if err != nil{
+		return "", err
 	}
-	return false, nil
+	return jsonStr, nil
 }
