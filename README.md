@@ -274,3 +274,28 @@ request:{
  	 param: ""
   }
 ```
+
+### 材料列表
+- 获取材料列表
+``
+router: /material/
+method: GET
+
+request:{}
+
+response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "填写成功/失败,原因."
+ 	 param: [
+ 	    {
+ 	        "id":1,
+ 	        "name":"material_1",
+ 	        "provider":"company_1",
+ 	        "unit":"mile",
+ 	        "description":""
+ 	    },
+ 	    {}
+ 	    ...
+ 	 ]
+}
+```
