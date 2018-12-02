@@ -7,3 +7,7 @@ func CreateInWarehouseTable(table *InWarehouseTableBody) error {
 func CreateOutWarehouseTable(table *OutWarehouseTableBody) error {
 	return nil
 }
+
+func ConfirmOutWarehouseTable(body *ConfirmOutWarehouseBody) error {
+	return nil
+}

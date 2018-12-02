@@ -13,3 +13,10 @@ func CheckOutWarehouseTableParam(table *OutWarehouseTableBody) bool {
 	}
 	return true
 }
+
+func CheckConfirmOutWarehouseParam(table *ConfirmOutWarehouseBody) bool{
+	if table.TableID == 0 || table.ConfirmUser == 0{
+		return false
+	}
+	return true
+}
