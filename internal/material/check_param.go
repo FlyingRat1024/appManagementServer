@@ -27,3 +27,10 @@ func CheckCheckTableParam(table *CheckTableBody) bool {
 	}
 	return true
 }
+
+func CheckMaterialParam(param *Material) bool {
+	if param.Name == "" || param.Unit == "" {
+		return false
+	}
+	return true
+}

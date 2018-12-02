@@ -26,3 +26,10 @@ type Common struct {
 	MaterialID int `json:"material_id"`
 	Num        int `json:"num"`
 }
+
+type Material struct {
+	Name        string `json:"name"`
+	Unit        string `json:"unit"`
+	Provider    string `json:"provider"`
+	Description string `json:"description"`
+}

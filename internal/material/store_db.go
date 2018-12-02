@@ -27,7 +27,7 @@ func CreateApplyTable(body *ApplyTableBody) error {
 	if err != nil {
 		return err
 	}
-	for _, material := range body.Material{
+	for _, material := range body.Material {
 		sqlfmt = "insert into apply_material (table_id,material_id, num) values(?,?,?)"
 		stmt, err = mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -72,16 +72,18 @@ func CreateReceiveTable(body *RecieveTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt = "insert into receive_material (table_id, material_id, receive_num) values(?,?,?)"
-	stmt, err = mysql.Prepare(sqlfmt)
-	if err != nil {
-		conn.Rollback()
-		return err
-	}
-	_, err = stmt.Exec(tableID, body.MaterialID, body.Num)
-	if err != nil {
-		conn.Rollback()
-		return err
+	for _, material := range body.Material {
+		sqlfmt = "insert into receive_material (table_id, material_id, receive_num) values(?,?,?)"
+		stmt, err = mysql.Prepare(sqlfmt)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
+		_, err = stmt.Exec(tableID, material.MaterialID, material.Num)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
 	}
 	//
 	err = conn.Commit()
@@ -112,18 +114,19 @@ func CreateBackTable(body *BackTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt = "update receive_material set back_num = ? where table_id = ? and material_id = ?"
-	stmt, err = mysql.Prepare(sqlfmt)
-	if err != nil {
-		conn.Rollback()
-		return err
+	for _, material := range body.Material {
+		sqlfmt = "update receive_material set back_num = ? where table_id = ? and material_id = ?"
+		stmt, err = mysql.Prepare(sqlfmt)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
+		_, err = stmt.Exec(material.Num, body.TableID, material.MaterialID)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
 	}
-	_, err = stmt.Exec(body.Num, body.TableID, body.MaterialID)
-	if err != nil {
-		conn.Rollback()
-		return err
-	}
-	//
 	err = conn.Commit()
 	if err != nil {
 		return err
@@ -152,20 +155,40 @@ func CreateCheckTable(body *CheckTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt = "update receive_material set check_num = ? where table_id = ? and material_id = ?"
-	stmt, err = mysql.Prepare(sqlfmt)
-	if err != nil {
-		conn.Rollback()
-		return err
+	for _, material := range body.Material {
+		sqlfmt = "update receive_material set check_num = ? where table_id = ? and material_id = ?"
+		stmt, err = mysql.Prepare(sqlfmt)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
+		_, err = stmt.Exec(material.Num, body.TableID, material.MaterialID)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
 	}
-	_, err = stmt.Exec(body.Num, body.TableID, body.MaterialID)
-	if err != nil {
-		conn.Rollback()
-		return err
-	}
-	//
 	err = conn.Commit()
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// 新增材料
+func CreateMaterial(param *Material) error{
+	mysql, err := db.GetDB()
+	if err != nil {
+		return err
+	}
+	defer mysql.Close()
+	sqlfmt := "insert into material(name, unit, provider, description) values(?,?,?,?)"
+	stmt, err := mysql.Prepare(sqlfmt)
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(param.Name, param.Unit, param.Provider, param.Description)
+	if err != nil{
 		return err
 	}
 	return nil
