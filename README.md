@@ -135,19 +135,19 @@
  	 param: {
   		applier: "申请人"
   		apply_time: "申请时间"
-  		material: [
-  		    {
-                material_name: "电缆"
-                material_size: "规格"
-                material_num: "数量"
-  		    },
-  		    {
-  		        material_name: "电缆"
-                material_size: "规格"
-                material_num: "数量"
-  		    }
-  		]
   		status: 0/1/-1 ("pending"|"pass"|"refuse" )
+  		material: [
+  		{
+  		material_name: "电缆"
+  		material_size: "规格"
+  		material_num: "数量"
+  		},
+  		{
+  		material_name: "电缆"
+  		material_size: "规格"
+  		material_num: "数量"
+  		}
+  		]
  	 }
   response(失败):{
  	 status: 0
