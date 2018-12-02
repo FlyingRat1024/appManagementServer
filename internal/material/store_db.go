@@ -27,18 +27,19 @@ func CreateApplyTable(body *ApplyTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt = "insert into apply_material (table_id,material_id, num) values(?,?,?)"
-	stmt, err = mysql.Prepare(sqlfmt)
-	if err != nil {
-		conn.Rollback()
-		return err
+	for _, material := range body.Material{
+		sqlfmt = "insert into apply_material (table_id,material_id, num) values(?,?,?)"
+		stmt, err = mysql.Prepare(sqlfmt)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
+		_, err = stmt.Exec(tableID, material.MaterialID, material.Num)
+		if err != nil {
+			conn.Rollback()
+			return err
+		}
 	}
-	_, err = stmt.Exec(tableID, body.MaterialID, body.Num)
-	if err != nil {
-		conn.Rollback()
-		return err
-	}
-	//
 	err = conn.Commit()
 	if err != nil {
 		return err

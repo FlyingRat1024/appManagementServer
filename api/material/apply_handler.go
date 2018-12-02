@@ -1,13 +1,16 @@
 package material
 
 import (
-	"androidappServer/internal/material"
-	"androidappServer/internal/response"
-	"androidappServer/pkg/status"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+)
+
+import (
+	"androidappServer/internal/material"
+	"androidappServer/internal/response"
+	"androidappServer/pkg/status"
 )
 
 //填写申请表
@@ -27,7 +30,7 @@ func WriteApplyTableHandler(ctx *gin.Context) {
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store apply table to database error"
-		logger.Error("store apply table to database error, error message ", err)
+		logger.Error("store apply table to database error, error message: ", err)
 		return
 	}
 	resBody.Status = status.StatusSuccess
