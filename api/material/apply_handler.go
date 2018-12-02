@@ -40,9 +40,10 @@ func WriteApplyTableHandler(ctx *gin.Context) {
 
 // 申请单列表
 func ApplyListhandler(ctx *gin.Context) {
+	userID := ctx.Query("user_id")
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
-	result, err := material.QueryApplyList()
+	result, err := material.QueryApplyList(userID)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query list failed"

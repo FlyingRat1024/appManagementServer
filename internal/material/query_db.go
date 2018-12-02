@@ -6,19 +6,19 @@ import (
 )
 
 // 查询申请列表
-func QueryApplyList() (string, error) {
+func QueryApplyList(userID string) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
 	}
 	defer mysql.Close()
 	sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as applier, " +
-		"verify as status, create_time from material_apply_table"
+		"verify as status, create_time from material_apply_table where user_id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
 	}
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(userID)
 	if err != nil {
 		return "", err
 	}
@@ -68,19 +68,19 @@ func QueryApplyDetail(tableID int) (string, error) {
 }
 
 // 查询领料单列表
-func QueryReceiveTableList() (string, error) {
+func QueryReceiveTableList(userID string) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
 	}
 	defer mysql.Close()
 	sqlfmt := "select id as table_id, (select employee_name from user where id = material_receive_table.receiver) as receiver, " +
-		"verify as status, create_time from material_receive_table"
+		"verify as status, create_time from material_receive_table where receiver = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
 	}
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(userID)
 	if err != nil {
 		return "", err
 	}
