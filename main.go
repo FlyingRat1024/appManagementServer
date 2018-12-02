@@ -53,6 +53,7 @@ func main() {
 	warehouseRouter.GET("/in/detail", warehouse.InWarehouseDetailHandler)
 	warehouseRouter.POST("/out", warehouse.WriteOutWarehouseHandler)
 	warehouseRouter.GET("/out", warehouse.OutWarehouseListHandler)
+	warehouseRouter.POST("/out/confirm", warehouse.ConfirmOutWarehouseHandler)
 	warehouseRouter.GET("/out/detail", warehouse.OutWarehouseDetailHandler)
 
 	err := router.Run(serverAddr)
