@@ -38,7 +38,14 @@ func WriteReceiveHandler(ctx *gin.Context) {
 func ReceiveListhandler(ctx *gin.Context) {
 	var resBody response.ResBody
 	defer ctx.JSON(http.StatusAccepted, &resBody)
-	result, err := material.QueryReceiveTableList()
+	userIdStr := ctx.Query("user_id")
+	userID, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
+	result, err := material.QueryReceiveTableList(userID)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query list failed"

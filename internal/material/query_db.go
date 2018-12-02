@@ -71,7 +71,7 @@ func QueryApplyDetail(tableID int) (string, error) {
 }
 
 // 查询领料单列表
-func QueryReceiveTableList(userID string) (string, error) {
+func QueryReceiveTableList(userID int) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err

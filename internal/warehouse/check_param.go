@@ -1,7 +1,7 @@
 package warehouse
 
 func CheckInWarehouseTableParam(table *InWarehouseTableBody) bool {
-	if table.Writer == 0 || table.Material == nil  {
+	if table.Writer == 0 || table.Material == nil {
 		return false
 	}
 	return true
