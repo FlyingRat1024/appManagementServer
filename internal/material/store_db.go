@@ -176,7 +176,7 @@ func CreateCheckTable(body *CheckTableBody) error {
 }
 
 // 新增材料
-func CreateMaterial(param *Material) error{
+func CreateMaterial(param *Material) error {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return err
@@ -188,7 +188,7 @@ func CreateMaterial(param *Material) error{
 		return err
 	}
 	_, err = stmt.Exec(param.Name, param.Unit, param.Provider, param.Description)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	return nil

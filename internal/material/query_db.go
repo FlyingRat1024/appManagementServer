@@ -46,6 +46,9 @@ func QueryApplyDetail(tableID int) (string, error) {
 	}
 	defer rows.Close()
 	resultMap, err := utils.SqlRows2Map(rows)
+	if err != nil {
+		return "", err
+	}
 	sqlfmt = "select material.name, material.unit, material.provider, apply.num " +
 		"from (select material_id, num from apply_material where id = ?) as apply " +
 		"JOIN material ON material.id = apply.material_id"
@@ -110,8 +113,10 @@ func QueryReceiveDetail(tableID int) (string, error) {
 		return "", err
 	}
 	defer rows.Close()
-
 	resultMap, err := utils.SqlRows2Map(rows)
+	if err != nil {
+		return "", err
+	}
 	sqlfmt = "select material.name, material.unit, material.provider, " +
 		"receive.receive_num, receive.back_num, receive.check_num " +
 		"from (select material_id, receive_num, check_num, back_num from receive_material where id = ?) as receive " +
