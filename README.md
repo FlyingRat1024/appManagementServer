@@ -104,11 +104,13 @@
  	 	table_id:  100   //表单id
  	 	applier: "申请人"
  	 	apply_time:"2018-11-10"
+ 	 	status: 0/1/-1
  	 },
  	 {
- 		 table_id:  101   //表单id
+ 		table_id:  101   //表单id
  	 	applier: "申请人"
  	 	apply_time:"2018-11-11"
+ 	 	status: 状态
  	 }
  	 ]
   }
@@ -131,11 +133,21 @@
  	 status: 1
  	 msg: "获取成功"
  	 param: {
- 	 	material_name: "电缆"
-  		material_size: "规格"
-  		material_num: "数量"
-  		applier: "申请人id"
-  		apply_time "申请时间"
+  		applier: "申请人"
+  		apply_time: "申请时间"
+  		material: [
+  		    {
+                material_name: "电缆"
+                material_size: "规格"
+                material_num: "数量"
+  		    },
+  		    {
+  		        material_name: "电缆"
+                material_size: "规格"
+                material_num: "数量"
+  		    }
+  		]
+  		status: 0/1/-1 ("pending"|"pass"|"refuse" )
  	 }
   response(失败):{
  	 status: 0
@@ -227,15 +239,43 @@ response(成功/失败):{
    response(成功/失败):{
  	 status: 1/0
  	 msg: "成功/失败,原因."
+ 	 //
+ 	 //  这个需要什么参数挑着用就行，都在里边了
+ 	 //
  	 param: {
  	 	table_id: 领料单id
- 	 	reciever_name: 领取人名字
+ 	 	reciever: 领取人名字
  	 	write_time: 填写时间
- 	 	material_id: 材料id
- 	 	material_name: ”材料名字“
- 	 	material_size: ”材料规格“
- 	 	material_provider: "提供商"
- 	 	material_num: 材料数量
+ 	 	verify: 经理确认情况
+ 	 	verifier: 确认人
+ 	 	verify_time: 确认时间
+ 	 	check: 质检状况
+ 	 	checker:质检人
+ 	 	check_time: 质检时间
+ 	 	back: 归还状况
+ 	 	backer: 归还人
+ 	 	back_time: 归还时间
+ 	 	material: [
+ 	 	    {
+ 	 	        material_id: 材料id
+                material_name: ”材料名字“
+                material_size: ”材料规格“
+                material_provider: "提供商"
+                receive_num: 领取数量
+                check_num: 质检数量
+                back_num: 归还数量
+ 	 	    },
+            {
+ 	 	        material_id: 材料id
+                material_name: ”材料名字“
+                material_size: ”材料规格“
+                material_provider: "提供商"
+                receive_num: 领取数量
+                check_num: 质检数量
+                back_num: 归还数量
+ 	 	    }
+ 	 	    ..
+ 	 	]
 	}
   }
 ```
@@ -253,11 +293,11 @@ router: /material/receive/
  	 	table_id: 领料单id
  	 	reciever_name: 领取人名字
  	 	write_time: 填写时间
- 	 	material_name: 材料名
-  },
-  {}
-  ...
-  ]
+ 	 	status：审核状态
+    },
+    {}
+    ...
+    ]
 ```
 ### 材料归还
 - 填写归还单
