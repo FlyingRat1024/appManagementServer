@@ -86,4 +86,3 @@ func InWarehouseDetailHandler(ctx *gin.Context) {
 	resBody.Param = result
 	return
 }
-
