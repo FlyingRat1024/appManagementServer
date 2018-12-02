@@ -64,11 +64,11 @@
     applier: 申请人id
   	material:[
             {
-            material_id: 材料id
+                id: 材料id
                 num: "领取数量"
             },
             {
-                material_id: 材料id
+                id: 材料id
                 num: "领取数量"
             }
         ]
@@ -91,9 +91,7 @@
   method: GET
 
   request:{
-    // 暂时不需要填写时间
-  	start_time: “开始时间”
-  	end_time: "结束时间"
+    user_id:
   }
 
   response (成功):{
@@ -138,14 +136,14 @@
   		status: 0/1/-1 ("pending"|"pass"|"refuse" )
   		material: [
   		{
-  		material_name: "电缆"
-  		material_size: "规格"
-  		material_num: "数量"
+  		name: "电缆"
+  		unit: "规格"
+  		num: "数量"
   		},
   		{
-  		material_name: "电缆"
-  		material_size: "规格"
-  		material_num: "数量"
+  		name: "电缆"
+  		unit: "规格"
+  		num: "数量"
   		}
   		]
  	 }
@@ -158,39 +156,117 @@
 ### 材料入库
 - 新增材料（入仓库）
 ```
-	router: /material/in_warehouse
-	method: POST
+router: /material/create
+method: POST
+
+request:{
+    writer: 填写人id
+    name : "材料名称"
+    description: "规格"
+    unit: “单位”
+    provider: "提供商"
+    num: "数量"
+}
+
+response(成功/失败):{
+    status: 1/0
+    msg: "获取成功/失败,原因."
+    param: ""
+}
+```
+- 填写入库单
+```
+router: /warehouse/in
+method: POST
+
+request:{
+    writer: 填写人id
+    reissue: 是否补办
+    material: [
+        {
+            id: 1
+            num: 100
+        },
+        {
+            id: 2
+            num: 22
+        }
+    ]
+}
+
+response(成功/失败):{
+    status: 1/0
+    msg: "获取成功/失败,原因."
+    param: ""
+}
+```
+- 入库单列表
+```
+	router: /warehouse/in
+	method: GET
 
 	request:{
-	     writer: 填写人id
-	     name : "材料名称"
-	     description: "规格"
-	     unit: “单位”
-	     provider: "提供商"
-	     num: "数量"
-  }
+	    user_id:
+    }
 
    response(成功/失败):{
  	 status: 1/0
  	 msg: "获取成功/失败,原因."
- 	 param: ""
+ 	 param: [
+ 	 {
+ 	    table_id:  100   //表单id
+ 	    writer: "填写人"
+ 	    write_time:"2018-11-10"
+ 	 },
+     {}
+     ..
+ 	 ]
   }
 ```
-### 材料出库
-- 填写入库单
+- 入库单详细信息
 ```
-	router: /warehouse/in
+	router: /warehouse/in/detail
+	method: GET
+
+	request:{
+	    table_id:
+    }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "获取成功/失败,原因."
+ 	 param: {
+        writer: 填写人
+        create_time: 创建时间
+        reissue: 是否补办
+        material:[
+        {
+            name: ""
+            unit: "规格"
+            num: "数量"
+            provider:""
+        }
+        { }
+        ]
+ 	 }
+  }
+```
+
+### 材料出库
+- 填写出库单
+```
+	router: /warehouse/out
 	method: POST
 
 	request:{
 	    writer: 填写人id
 	    material:[
             {
-                material_id: 材料id
+                id: 材料id
                 num: "领取数量"
             },
             {
-                material_id: 材料id
+                id: 材料id
                 num: "领取数量"
             }
         ]
@@ -202,6 +278,75 @@
  	 param: ""
   }
 ```
+- 确认出库
+```
+	router: /warehouse/out/confirm
+	method: POST
+
+	request:{
+	    confirm_user: 确认人id
+        table_id : 出库单id
+    }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "获取成功/失败,原因."
+ 	 param: ""
+  }
+```
+- 出库单列表
+```
+	router: /warehouse/out
+	method: GET
+
+	request:{
+	    user_id:
+    }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "获取成功/失败,原因."
+ 	 param: [
+ 	 {
+ 	    table_id:  100   //表单id
+ 	    writer: "填写人"
+ 	    write_time:"2018-11-10"
+ 	    status: 0/1/-1 确认状态
+ 	 },
+     {
+
+     }
+ 	 ]
+  }
+```
+- 出库单详细信息
+```
+	router: /warehouse/out/detail
+	method: GET
+
+	request:{
+	    table_id:
+    }
+
+   response(成功/失败):{
+ 	 status: 1/0
+ 	 msg: "获取成功/失败,原因."
+ 	 param: {
+        writer: 填写人
+        create_time: 创建时间
+        material:[
+        {
+            name: ""
+            unit: "规格"
+            num: "数量"
+            provider:""
+        }
+        { }
+        ]
+ 	 }
+  }
+```
+
 ### 材料领取
 - 填写领取单
 ```
@@ -212,11 +357,11 @@ request:{
     receiver : 领取人id
     material:[
         {
-            material_id: 材料id
+            id: 材料id
             num: "领取数量"
         },
         {
-            material_id: 材料id
+            id: 材料id
             num: "领取数量"
         }
     ]
@@ -257,19 +402,19 @@ response(成功/失败):{
  	 	back_time: 归还时间
  	 	material: [
  	 	    {
- 	 	        material_id: 材料id
-                material_name: ”材料名字“
-                material_size: ”材料规格“
-                material_provider: "提供商"
+ 	 	        id: 材料id
+                name: ”材料名字“
+                unit: ”材料规格“
+                provider: "提供商"
                 receive_num: 领取数量
                 check_num: 质检数量
                 back_num: 归还数量
  	 	    },
             {
- 	 	        material_id: 材料id
-                material_name: ”材料名字“
-                material_size: ”材料规格“
-                material_provider: "提供商"
+ 	 	        id: 材料id
+                name: ”材料名字“
+                unit: ”材料规格“
+                provider: "提供商"
                 receive_num: 领取数量
                 check_num: 质检数量
                 back_num: 归还数量
@@ -284,6 +429,7 @@ response(成功/失败):{
 router: /material/receive/
 	method: GET
 	request:{
+	    user_id:
 	}
    response(成功/失败):{
  	 status: 1/0
