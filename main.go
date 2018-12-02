@@ -37,6 +37,7 @@ func main() {
 	// material
 	materialRouter := router.Group("/material")
 	materialRouter.GET("/", material.MaterialListHandler)
+	materialRouter.POST("/create", material.CreateMaterialHandler)
 	materialRouter.POST("/apply/write_table", material.WriteApplyTableHandler)
 	materialRouter.GET("/apply/", material.ApplyListhandler)
 	materialRouter.GET("/apply/detail", material.ApplyDetailHandler)
@@ -46,9 +47,13 @@ func main() {
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
 	//
-	repoRouter := router.Group("/warehouse")
-	repoRouter.POST("/in/write_table", warehouse.WriteInWarehouseHandler)
-	repoRouter.POST("/out/write_table", warehouse.WriteOutWarehouseHandler)
+	warehouseRouter := router.Group("/warehouse")
+	warehouseRouter.POST("/in", warehouse.WriteInWarehouseHandler)
+	warehouseRouter.GET("/in", warehouse.InWarehouseListHandler)
+	warehouseRouter.GET("/in/detail", warehouse.InWarehouseDetailHandler)
+	warehouseRouter.POST("/out", warehouse.WriteOutWarehouseHandler)
+	warehouseRouter.GET("/out", warehouse.OutWarehouseListHandler)
+	warehouseRouter.GET("/out/detail", warehouse.OutWarehouseDetailHandler)
 
 	err := router.Run(serverAddr)
 	if err != nil {
