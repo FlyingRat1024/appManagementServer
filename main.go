@@ -10,6 +10,7 @@ Modification history
 package main
 
 import (
+	"androidappServer/api/user"
 	"androidappServer/api/warehouse"
 	"fmt"
 )
@@ -46,7 +47,7 @@ func main() {
 	materialRouter.GET("/receive/detail", material.ReceiveDetailHandler)
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
-	//
+	// warehouse
 	warehouseRouter := router.Group("/warehouse")
 	warehouseRouter.POST("/in", warehouse.WriteInWarehouseHandler)
 	warehouseRouter.GET("/in", warehouse.InWarehouseListHandler)
@@ -55,7 +56,10 @@ func main() {
 	warehouseRouter.GET("/out", warehouse.OutWarehouseListHandler)
 	warehouseRouter.POST("/out/confirm", warehouse.ConfirmOutWarehouseHandler)
 	warehouseRouter.GET("/out/detail", warehouse.OutWarehouseDetailHandler)
-
+	// user
+	userRouter := router.Group("/user")
+	userRouter.GET("/info", user.GetUserInfo)
+	userRouter.POST("/modify/password", user.ModifyPassword)
 	err := router.Run(serverAddr)
 	if err != nil {
 		logger.Error("run server error!")
