@@ -106,7 +106,7 @@ func SqlRows2Map(rows *sql.Rows) (map[string]interface{}, error) {
 	return tableData, nil
 }
 
-func ToString(param interface{}) (string, error){
+func ToString(param interface{}) (string, error) {
 	jsonData, err := json.Marshal(param)
 	if err != nil {
 		return "", err

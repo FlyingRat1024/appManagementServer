@@ -16,12 +16,12 @@ func Login(employeeID string, password string) (string, error) {
 		return "", err
 	}
 	rows, err := stmt.Query(employeeID, password)
-	if err != nil{
+	if err != nil {
 		return "", err
 	}
 	defer rows.Close()
 	jsonStr, err := utils.SqlRows2Json(rows)
-	if err != nil{
+	if err != nil {
 		return "", err
 	}
 	return jsonStr, nil
