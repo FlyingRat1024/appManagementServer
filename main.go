@@ -10,6 +10,7 @@ Modification history
 package main
 
 import (
+	"androidappServer/api/permission"
 	"androidappServer/api/user"
 	"androidappServer/api/warehouse"
 	"fmt"
@@ -34,7 +35,8 @@ func main() {
 	router.Use(cors.Default())
 	// app
 	loginRouter := router.Group("/app")
-	loginRouter.Handle("POST", "/login", login.LoginHandler)
+	loginRouter.POST("/login", login.LoginHandler)
+	loginRouter.GET("/permission", permission.PermissionHandler)
 	// material
 	materialRouter := router.Group("/material")
 	materialRouter.GET("/", material.MaterialListHandler)
