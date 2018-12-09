@@ -6,26 +6,44 @@ import (
 )
 
 //查询入库单列表
-func QueryInWarehouseList(userID int) (string, error) {
+func QueryInWarehouseList(userID string) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
 	}
 	defer mysql.Close()
-	sqlfmt := "select id as table_id, " +
-		"(select employee_name from user where id = warehouse_in.writer) as writer, " +
-		"create_time, reissue from warehouse_in"
-	stmt, err := mysql.Prepare(sqlfmt)
-	if err != nil {
-		return "", err
+	if userID == ""{
+		sqlfmt := "select id as table_id, " +
+			"(select employee_name from user where id = warehouse_in.writer) as writer, " +
+			"create_time, reissue from warehouse_in"
+		stmt, err := mysql.Prepare(sqlfmt)
+		if err != nil {
+			return "", err
+		}
+		rows, err := stmt.Query()
+		if err != nil {
+			return "", err
+		}
+		defer rows.Close()
+		jsonStr, err := utils.SqlRows2JsonList(rows)
+		return jsonStr, err
+	}else {
+		sqlfmt := "select id as table_id, " +
+			"(select employee_name from user where id = warehouse_in.writer) as writer, " +
+			"create_time, reissue from warehouse_in where writer = ?"
+		stmt, err := mysql.Prepare(sqlfmt)
+		if err != nil {
+			return "", err
+		}
+		rows, err := stmt.Query(userID)
+		if err != nil {
+			return "", err
+		}
+		defer rows.Close()
+		jsonStr, err := utils.SqlRows2JsonList(rows)
+		return jsonStr, err
 	}
-	rows, err := stmt.Query(userID)
-	if err != nil {
-		return "", err
-	}
-	defer rows.Close()
-	jsonStr, err := utils.SqlRows2JsonList(rows)
-	return jsonStr, err
+
 }
 
 //查询入库单详细信息
@@ -73,26 +91,44 @@ func QueryInWarehouseDetail(tableID int) (string, error) {
 }
 
 //查询出库单列表
-func QueryOutWarehouseList(userID int) (string, error) {
+func QueryOutWarehouseList(userID string) (string, error) {
 	mysql, err := db.GetDB()
 	if err != nil {
 		return "", err
 	}
 	defer mysql.Close()
-	sqlfmt := "select id as table_id, " +
-		"(select employee_name from user where id = warehouse_out.writer) as writer, " +
-		"create_time from warehouse_out"
-	stmt, err := mysql.Prepare(sqlfmt)
-	if err != nil {
-		return "", err
+	if userID == ""{
+		sqlfmt := "select id as table_id, " +
+			"(select employee_name from user where id = warehouse_out.writer) as writer, " +
+			"create_time from warehouse_out"
+		stmt, err := mysql.Prepare(sqlfmt)
+		if err != nil {
+			return "", err
+		}
+		rows, err := stmt.Query()
+		if err != nil {
+			return "", err
+		}
+		defer rows.Close()
+		jsonStr, err := utils.SqlRows2JsonList(rows)
+		return jsonStr, err
+	}else{
+		sqlfmt := "select id as table_id, " +
+			"(select employee_name from user where id = warehouse_out.writer) as writer, " +
+			"create_time from warehouse_out where writer = ?"
+		stmt, err := mysql.Prepare(sqlfmt)
+		if err != nil {
+			return "", err
+		}
+		rows, err := stmt.Query(userID)
+		if err != nil {
+			return "", err
+		}
+		defer rows.Close()
+		jsonStr, err := utils.SqlRows2JsonList(rows)
+		return jsonStr, err
 	}
-	rows, err := stmt.Query(userID)
-	if err != nil {
-		return "", err
-	}
-	defer rows.Close()
-	jsonStr, err := utils.SqlRows2JsonList(rows)
-	return jsonStr, err
+
 }
 
 //查询出库单详细信息

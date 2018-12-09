@@ -32,7 +32,7 @@ CREATE TABLE `apply_material` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `apply_material_ibfk_1` FOREIGN KEY (`table_id`) REFERENCES `material_apply_table` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `apply_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +41,7 @@ CREATE TABLE `apply_material` (
 
 LOCK TABLES `apply_material` WRITE;
 /*!40000 ALTER TABLE `apply_material` DISABLE KEYS */;
+INSERT INTO `apply_material` VALUES (1,1,1,10),(2,2,3,10),(3,1,1,10),(4,4,1,100);
 /*!40000 ALTER TABLE `apply_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +62,7 @@ CREATE TABLE `in_material` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `in_material_ibfk_1` FOREIGN KEY (`in_id`) REFERENCES `warehouse_in` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `in_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +71,7 @@ CREATE TABLE `in_material` (
 
 LOCK TABLES `in_material` WRITE;
 /*!40000 ALTER TABLE `in_material` DISABLE KEYS */;
+INSERT INTO `in_material` VALUES (1,1,1,11);
 /*!40000 ALTER TABLE `in_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +89,7 @@ CREATE TABLE `material` (
   `provider` varchar(255) DEFAULT NULL,
   `description` varchar(155) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,6 +98,7 @@ CREATE TABLE `material` (
 
 LOCK TABLES `material` WRITE;
 /*!40000 ALTER TABLE `material` DISABLE KEYS */;
+INSERT INTO `material` VALUES (1,'material_1','mile','company_1',''),(2,'material_2','mile','company_2',''),(3,'material_3','mile','company_2',''),(4,'材料1','个','天津某公司','');
 /*!40000 ALTER TABLE `material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,17 +112,17 @@ DROP TABLE IF EXISTS `material_apply_table`;
 CREATE TABLE `material_apply_table` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `create_time` datetime NOT NULL,
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `verifier` int(11) DEFAULT NULL,
   `verify_time` datetime DEFAULT NULL,
-  `verify` int(11) DEFAULT NULL COMMENT '是否审核通过0未审核，1通过，-1未通过',
+  `verify` int(1) DEFAULT '0',
   `verify_comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `verifier` (`verifier`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `verifier` FOREIGN KEY (`verifier`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,6 +131,7 @@ CREATE TABLE `material_apply_table` (
 
 LOCK TABLES `material_apply_table` WRITE;
 /*!40000 ALTER TABLE `material_apply_table` DISABLE KEYS */;
+INSERT INTO `material_apply_table` VALUES (1,2,'2018-11-26 00:45:40',1,'2018-11-26 00:45:40',1,''),(2,2,'2018-11-26 00:46:04',1,'2018-11-26 00:46:04',0,''),(3,2,'2018-11-26 22:40:29',NULL,NULL,0,NULL),(4,2,'2018-11-26 23:46:05',NULL,NULL,0,NULL),(5,3,'2018-12-02 21:49:15',1,'2018-12-02 21:49:15',-1,'');
 /*!40000 ALTER TABLE `material_apply_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,17 +145,17 @@ DROP TABLE IF EXISTS `material_receive_table`;
 CREATE TABLE `material_receive_table` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `receiver` int(11) NOT NULL,
-  `create_time` datetime DEFAULT NULL,
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `verifier` int(11) DEFAULT NULL,
-  `verify` int(11) DEFAULT NULL COMMENT '是否审核通过0未审核，1通过，-1未通过',
+  `verify` int(1) DEFAULT '0',
   `verify_time` datetime DEFAULT NULL,
   `verify_comment` varchar(255) DEFAULT NULL,
   `checker` int(11) DEFAULT NULL,
   `check_time` datetime DEFAULT NULL,
-  `check` tinyint(4) DEFAULT NULL COMMENT '1:检查过了\n2：未检查',
+  `check` int(1) DEFAULT '0',
   `back_user` int(11) DEFAULT NULL,
   `back_time` datetime DEFAULT NULL,
-  `back` tinyint(4) DEFAULT NULL,
+  `back` int(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `checker` (`checker`),
@@ -161,7 +165,7 @@ CREATE TABLE `material_receive_table` (
   CONSTRAINT `material_receive_table_ibfk_2` FOREIGN KEY (`checker`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `material_receive_table_ibfk_3` FOREIGN KEY (`verifier`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `material_receive_table_ibfk_4` FOREIGN KEY (`back_user`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,6 +174,7 @@ CREATE TABLE `material_receive_table` (
 
 LOCK TABLES `material_receive_table` WRITE;
 /*!40000 ALTER TABLE `material_receive_table` DISABLE KEYS */;
+INSERT INTO `material_receive_table` VALUES (1,2,'2018-11-26 02:19:19',1,1,NULL,'',NULL,NULL,0,NULL,NULL,0),(3,2,'2018-11-26 02:20:10',1,0,NULL,'no',NULL,NULL,0,NULL,NULL,0),(4,2,'2018-11-26 23:48:06',NULL,0,NULL,NULL,2,'2018-11-27 00:00:30',1,2,'2018-11-26 23:59:54',1);
 /*!40000 ALTER TABLE `material_receive_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,7 +193,7 @@ CREATE TABLE `message` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +222,7 @@ CREATE TABLE `out_material` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `out_material_ibfk_1` FOREIGN KEY (`out_id`) REFERENCES `warehouse_out` (`id`),
   CONSTRAINT `out_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,6 +232,31 @@ CREATE TABLE `out_material` (
 LOCK TABLES `out_material` WRITE;
 /*!40000 ALTER TABLE `out_material` DISABLE KEYS */;
 /*!40000 ALTER TABLE `out_material` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permission`
+--
+
+DROP TABLE IF EXISTS `permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role` varchar(128) NOT NULL,
+  `permission` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permission`
+--
+
+LOCK TABLES `permission` WRITE;
+/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+INSERT INTO `permission` VALUES (1,'inspector','quality-inspection'),(2,'construction-leader','material-apply-form-create'),(3,'construction-leader','material-get-form-create'),(4,'construction-leader','material-return-form-create'),(5,'construction-leader','material-useless-form-create'),(6,'regional-manager','material-purchase-form-create'),(7,'professional-manager','material-get-form-check'),(8,'warehouse-manager','warehouse-form-create');
+/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -248,7 +278,7 @@ CREATE TABLE `receive_material` (
   KEY `material_id` (`material_id`),
   CONSTRAINT `receive_material_ibfk_1` FOREIGN KEY (`table_id`) REFERENCES `material_receive_table` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `receive_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -257,6 +287,7 @@ CREATE TABLE `receive_material` (
 
 LOCK TABLES `receive_material` WRITE;
 /*!40000 ALTER TABLE `receive_material` DISABLE KEYS */;
+INSERT INTO `receive_material` VALUES (1,1,1,100,50,50),(2,4,1,220,10,10);
 /*!40000 ALTER TABLE `receive_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,7 +308,7 @@ CREATE TABLE `user` (
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +317,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'123456','admin','male','root','123456','2018-11-12 00:01:32','2018-11-12 00:01:32');
+INSERT INTO `user` VALUES (1,'123456','admin','male','root','123456','2018-11-12 00:01:32','2018-11-12 00:01:32'),(2,'100000','myh','male','normal','123456','2018-11-26 00:44:12','2018-11-26 00:44:12'),(3,'100001','张三','male','normal','123456','2018-11-28 22:21:33','2018-11-28 22:21:33');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +335,7 @@ CREATE TABLE `warehouse` (
   PRIMARY KEY (`id`),
   KEY `material_id` (`material_id`),
   CONSTRAINT `material_id` FOREIGN KEY (`material_id`) REFERENCES `material` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +362,7 @@ CREATE TABLE `warehouse_in` (
   PRIMARY KEY (`id`),
   KEY `writer` (`writer`),
   CONSTRAINT `warehouse_in_ibfk_1` FOREIGN KEY (`writer`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,6 +371,7 @@ CREATE TABLE `warehouse_in` (
 
 LOCK TABLES `warehouse_in` WRITE;
 /*!40000 ALTER TABLE `warehouse_in` DISABLE KEYS */;
+INSERT INTO `warehouse_in` VALUES (1,2,0,'2018-12-03 02:58:54');
 /*!40000 ALTER TABLE `warehouse_in` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,14 +386,14 @@ CREATE TABLE `warehouse_out` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `writer` int(11) NOT NULL,
   `create_time` datetime DEFAULT NULL,
-  `verifier` int(11) NOT NULL,
+  `verifier` int(11) DEFAULT NULL,
   `verify_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `writer` (`writer`),
   KEY `verifier` (`verifier`),
   CONSTRAINT `warehouse_out_ibfk_1` FOREIGN KEY (`writer`) REFERENCES `user` (`id`),
   CONSTRAINT `warehouse_out_ibfk_2` FOREIGN KEY (`verifier`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -382,4 +414,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-25 17:36:14
+-- Dump completed on 2018-12-09 23:14:10

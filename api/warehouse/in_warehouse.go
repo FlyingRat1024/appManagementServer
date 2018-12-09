@@ -35,14 +35,8 @@ func WriteInWarehouseHandler(ctx *gin.Context) {
 
 // 入库单列表
 func InWarehouseListHandler(ctx *gin.Context) {
-	userIdStr := ctx.Query("user_id")
+	userID := ctx.Query("user_id")
 	var resBody response.ResBody
-	userID, err := strconv.Atoi(userIdStr)
-	if err != nil {
-		resBody.Status = status.StatusFailed
-		resBody.Msg = "check request parameter error"
-		return
-	}
 	result, err := warehouse.QueryInWarehouseList(userID)
 	if err != nil {
 		resBody.Status = status.StatusFailed

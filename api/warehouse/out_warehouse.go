@@ -57,14 +57,8 @@ func ConfirmOutWarehouseHandler(ctx *gin.Context) {
 }
 
 func OutWarehouseListHandler(ctx *gin.Context) {
-	userIdStr := ctx.Query("user_id")
+	userID := ctx.Query("user_id")
 	var resBody response.ResBody
-	userID, err := strconv.Atoi(userIdStr)
-	if err != nil {
-		resBody.Status = status.StatusFailed
-		resBody.Msg = "check request parameter error"
-		return
-	}
 	result, err := warehouse.QueryOutWarehouseList(userID)
 	if err != nil {
 		resBody.Status = status.StatusFailed

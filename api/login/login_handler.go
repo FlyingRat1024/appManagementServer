@@ -31,7 +31,6 @@ func LoginHandler(ctx *gin.Context) {
 	var reqBody requestBody
 	err := ctx.BindJSON(&reqBody)
 	if err != nil {
-		logger.Error("parse request error, json error, error message: ", err)
 		resBody.Msg = "login error, cant't parse request parameter, please check your json string"
 		ctx.JSON(http.StatusOK, resBody)
 		return
