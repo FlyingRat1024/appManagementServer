@@ -21,12 +21,12 @@ func Login(employeeID string, password string) (string, error) {
 		return "", err
 	}
 	defer rows.Close()
-	if !rows.Next(){
-		return "", fmt.Errorf("not found user or password error")
-	}
 	jsonStr, err := utils.SqlRows2Json(rows)
 	if err != nil {
 		return "", err
+	}
+	if jsonStr == "{}"{
+		return "", fmt.Errorf("not found user or password error")
 	}
 	return jsonStr, nil
 }
