@@ -155,7 +155,7 @@ func QueryOutWarehouseDetail(tableID int) (string, error) {
 		return "", err
 	}
 	sqlfmt = "select material.name, material.unit, material.provider, out_material.number " +
-		"from (select material_id, number from in_material where out_id = ?) as out_material " +
+		"from (select material_id, number from out_material where out_id = ?) as out_material " +
 		"JOIN material ON material.id = out_material.material_id"
 	stmt, err = mysql.Prepare(sqlfmt)
 	if err != nil {
