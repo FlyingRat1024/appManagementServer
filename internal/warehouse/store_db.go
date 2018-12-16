@@ -15,7 +15,7 @@ func CreateInWarehouseTable(table *InWarehouseTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "insert into warehouse_in (writer, reissue, create_time) values(?,?,now())"
+	sqlfmt := "insert into warehouse_in (writer, reissue, create_time, status) values(?,?,now(),'pending')"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err
@@ -59,7 +59,7 @@ func CreateOutWarehouseTable(table *OutWarehouseTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "insert into warehouse_out (writer, create_time) values(?,now())"
+	sqlfmt := "insert into warehouse_out (writer, create_time, status) values(?, now(), 'pending')"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err

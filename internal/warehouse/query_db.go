@@ -3,6 +3,7 @@ package warehouse
 import (
 	"androidappServer/db"
 	"androidappServer/pkg/utils"
+	"fmt"
 )
 
 //查询入库单列表
@@ -55,7 +56,7 @@ func QueryInWarehouseDetail(tableID int) (string, error) {
 	defer mysql.Close()
 	sqlfmt := "select id as table_id, " +
 		"(select employee_name from user where id = warehouse_in.writer) as writer, " +
-		"create_time, reissue from warehouse_in where id = ?"
+		"create_time, reissue, status from warehouse_in where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
@@ -68,6 +69,9 @@ func QueryInWarehouseDetail(tableID int) (string, error) {
 	resultMap, err := utils.SqlRows2Map(rows)
 	if err != nil {
 		return "", err
+	}
+	if len(resultMap) == 0{
+		return "", fmt.Errorf("can't find this table")
 	}
 	sqlfmt = "select material.name, material.unit, material.provider, in_material.number " +
 		"from (select material_id, number from in_material where in_id = ?) as in_material " +
@@ -140,7 +144,7 @@ func QueryOutWarehouseDetail(tableID int) (string, error) {
 	defer mysql.Close()
 	sqlfmt := "select id as table_id, " +
 		"(select employee_name from user where id = warehouse_out.writer) as writer, " +
-		"create_time from warehouse_out where id = ?"
+		"create_time, status from warehouse_out where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
@@ -153,6 +157,9 @@ func QueryOutWarehouseDetail(tableID int) (string, error) {
 	resultMap, err := utils.SqlRows2Map(rows)
 	if err != nil {
 		return "", err
+	}
+	if len(resultMap) == 0{
+		return "", fmt.Errorf("can't find this table")
 	}
 	sqlfmt = "select material.name, material.unit, material.provider, out_material.number " +
 		"from (select material_id, number from out_material where out_id = ?) as out_material " +

@@ -89,11 +89,11 @@ func OutWarehouseDetailHandler(ctx *gin.Context) {
 		resBody.Msg = "check request parameter error"
 		return
 	}
-	result, err := warehouse.QueryInWarehouseDetail(tableID)
+	result, err := warehouse.QueryOutWarehouseDetail(tableID)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query detail failed"
-		logger.Error("query in warehouse detail failed, error message: ", err)
+		logger.Error("query out warehouse detail failed, error message: ", err)
 		return
 	}
 	resBody.Status = status.StatusSuccess

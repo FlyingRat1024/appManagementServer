@@ -14,12 +14,13 @@ func CreateApplyTable(body *ApplyTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "insert into material_apply_table (user_id, create_time) values(?, now())"
+	status := "pending"
+	sqlfmt := "insert into material_apply_table (user_id, create_time, status) values(?, now(), ?)"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err
 	}
-	result, err := stmt.Exec(body.ApplierID)
+	result, err := stmt.Exec(body.ApplierID, status)
 	if err != nil {
 		return err
 	}
@@ -59,7 +60,7 @@ func CreateReceiveTable(body *RecieveTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "insert into material_receive_table (receiver, create_time) values(?, now())"
+	sqlfmt := "insert into material_receive_table (receiver, create_time, status) values(?, now(), 'pending')"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err

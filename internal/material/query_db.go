@@ -13,7 +13,7 @@ func QueryApplyList(userID string) (string, error) {
 	}
 	defer mysql.Close()
 	if userID == "" {
-		sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as applier, " +
+		sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as writer, " +
 			"verify as status, create_time from material_apply_table"
 		stmt, err := mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -27,7 +27,7 @@ func QueryApplyList(userID string) (string, error) {
 		jsonStr, err := utils.SqlRows2JsonList(rows)
 		return jsonStr, err
 	} else {
-		sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as applier, " +
+		sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as writer, " +
 			"verify as status, create_time from material_apply_table where user_id = ?"
 		stmt, err := mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -51,7 +51,7 @@ func QueryApplyDetail(tableID int) (string, error) {
 		return "", err
 	}
 	defer mysql.Close()
-	sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as applier, " +
+	sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as writer, " +
 		"verify as status, create_time from material_apply_table where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
@@ -133,11 +133,11 @@ func QueryReceiveDetail(tableID int) (string, error) {
 		return "", err
 	}
 	defer mysql.Close()
-	sqlfmt := "select id, (select employee_name from user where id = receiver) as receiver, create_time, " +
+	sqlfmt := "select id, (select employee_name from user where id = receiver) as writer, create_time, status, " +
 		"verify, (select employee_name from user where id = verifier) as verifier, verify_time, " +
 		"`check`, (select employee_name from user where id = checker) as checker, check_time, " +
 		"back, (select employee_name from user where id = back_user) as backer, back_time " +
-		"from material_receive_table "
+		"from material_receive_table where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
@@ -155,11 +155,11 @@ func QueryReceiveDetail(tableID int) (string, error) {
 		"receive.receive_num, receive.back_num, receive.check_num " +
 		"from (select material_id, receive_num, check_num, back_num from receive_material where id = ?) as receive " +
 		"JOIN material ON material.id = receive.material_id"
-	stmt, err = mysql.Prepare(sqlfmt)
+	stmt1, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
 	}
-	rows1, err := stmt.Query(tableID)
+	rows1, err := stmt1.Query(tableID)
 	if err != nil {
 		return "", err
 	}
