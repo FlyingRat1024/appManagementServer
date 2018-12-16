@@ -17,7 +17,12 @@ import (
 func WriteApplyTableHandler(ctx *gin.Context) {
 	var table material.ApplyTableBody
 	var resBody response.ResBody
-	ctx.BindJSON(&table)
+	err := ctx.BindJSON(&table)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
 	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckApplyTableParam(&table) {
@@ -26,7 +31,7 @@ func WriteApplyTableHandler(ctx *gin.Context) {
 		return
 	}
 	//store db
-	err := material.CreateApplyTable(&table)
+	err = material.CreateApplyTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store apply table to database error"
@@ -89,14 +94,19 @@ func ApplyDetailHandler(ctx *gin.Context) {
 func ApplyVerifyHandler(ctx *gin.Context) {
 	var body material.VerifyBody
 	var resBody response.ResBody
-	ctx.BindJSON(&body)
+	err := ctx.BindJSON(&body)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
 	defer ctx.JSON(http.StatusOK, &resBody)
 	if body.TableID == 0 || body.Status == ""{
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "parameter check failed"
 		return
 	}
-	err := material.ModifyStatus(&body)
+	err = material.ModifyStatus(&body)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "verify failed"

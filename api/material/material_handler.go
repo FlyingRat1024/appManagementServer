@@ -27,14 +27,19 @@ func MaterialListHandler(ctx *gin.Context) {
 func CreateMaterialHandler(ctx *gin.Context) {
 	resBody := response.ResBody{}
 	var reqBody material.Material
-	ctx.BindJSON(&reqBody)
+	err := ctx.BindJSON(&reqBody)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
 	defer ctx.JSON(http.StatusOK, &resBody)
 	if !material.CheckMaterialParam(&reqBody) {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check param error, please check your json string"
 		return
 	}
-	err := material.CreateMaterial(&reqBody)
+	err = material.CreateMaterial(&reqBody)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "execute database success"

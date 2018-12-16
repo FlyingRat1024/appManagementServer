@@ -12,7 +12,12 @@ import (
 func WriteBackTableHandler(ctx *gin.Context) {
 	var table material.BackTableBody
 	var resBody response.ResBody
-	ctx.BindJSON(&table)
+	err := ctx.BindJSON(&table)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
 	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckBackTableParam(&table) {
@@ -21,7 +26,7 @@ func WriteBackTableHandler(ctx *gin.Context) {
 		return
 	}
 	//store db
-	err := material.CreateBackTable(&table)
+	err = material.CreateBackTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store back table to database error"

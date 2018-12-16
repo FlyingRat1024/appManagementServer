@@ -13,7 +13,12 @@ import (
 func WriteReceiveHandler(ctx *gin.Context) {
 	var table material.RecieveTableBody
 	var resBody response.ResBody
-	ctx.BindJSON(&table)
+	err := ctx.BindJSON(&table)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
 	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckReceiveTableParam(&table) {
@@ -22,7 +27,7 @@ func WriteReceiveHandler(ctx *gin.Context) {
 		return
 	}
 	//store db
-	err := material.CreateReceiveTable(&table)
+	err = material.CreateReceiveTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store receive table to database error"

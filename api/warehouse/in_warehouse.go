@@ -13,7 +13,12 @@ import (
 func WriteInWarehouseHandler(ctx *gin.Context) {
 	var table warehouse.InWarehouseTableBody
 	var resBody response.ResBody
-	ctx.BindJSON(&table)
+	err := ctx.BindJSON(&table)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
 	defer ctx.JSON(http.StatusOK, &resBody)
 	if !warehouse.CheckInWarehouseTableParam(&table) {
 		resBody.Status = status.StatusFailed
@@ -21,7 +26,7 @@ func WriteInWarehouseHandler(ctx *gin.Context) {
 		return
 	}
 	//store db
-	err := warehouse.CreateInWarehouseTable(&table)
+	err = warehouse.CreateInWarehouseTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "store in warehouse table to database error"

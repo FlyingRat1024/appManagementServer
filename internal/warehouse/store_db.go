@@ -98,7 +98,7 @@ func ConfirmOutWarehouseTable(body *ConfirmOutWarehouseBody) error {
 		return err
 	}
 	defer mysql.Close()
-	sqlfmt := "update warehouse_out set verifier = ?, verify_time = now() where id = ?"
+	sqlfmt := "update warehouse_out set verify = ?, verify_time = now() where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err
