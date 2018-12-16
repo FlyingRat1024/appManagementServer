@@ -95,7 +95,7 @@ func QueryReceiveTableList(userID string) (string, error) {
 	}
 	defer mysql.Close()
 	if userID == "" {
-		sqlfmt := "select id as table_id, (select employee_name from user where id = material_receive_table.receiver) as receiver, " +
+		sqlfmt := "select id as table_id, (select employee_name from user where id = material_receive_table.receiver) as writer, " +
 			"verify as status, create_time from material_receive_table"
 		stmt, err := mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -109,7 +109,7 @@ func QueryReceiveTableList(userID string) (string, error) {
 		jsonStr, err := utils.SqlRows2JsonList(rows)
 		return jsonStr, err
 	} else {
-		sqlfmt := "select id as table_id, (select employee_name from user where id = material_receive_table.receiver) as receiver, " +
+		sqlfmt := "select id as table_id, (select employee_name from user where id = material_receive_table.receiver) as writer, " +
 			"verify as status, create_time from material_receive_table where receiver = ?"
 		stmt, err := mysql.Prepare(sqlfmt)
 		if err != nil {
