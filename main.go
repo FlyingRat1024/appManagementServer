@@ -44,6 +44,7 @@ func main() {
 	materialRouter.POST("/apply/write_table", material.WriteApplyTableHandler)
 	materialRouter.GET("/apply", material.ApplyListhandler)
 	materialRouter.GET("/apply/detail", material.ApplyDetailHandler)
+	materialRouter.POST("/apply/verify", material.ApplyVerifyHandler)
 	materialRouter.POST("/receive/write_table", material.WriteReceiveHandler)
 	materialRouter.GET("/receive", material.ReceiveListhandler)
 	materialRouter.GET("/receive/detail", material.ReceiveDetailHandler)

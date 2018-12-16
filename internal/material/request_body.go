@@ -16,6 +16,11 @@ type BackTableBody struct {
 	Material []Common `json:"material"`
 }
 
+type VerifyBody struct {
+	TableID int    `json:"table_id"`
+	Status  string `json:"status"`
+}
+
 type CheckTableBody struct {
 	TableID   int      `json:"table_id"`
 	CheckerID int      `json:"checker"`

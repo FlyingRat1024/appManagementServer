@@ -1,6 +1,9 @@
 package material
 
-import "androidappServer/db"
+import (
+	"androidappServer/db"
+	"fmt"
+)
 
 // 填写申请表
 func CreateApplyTable(body *ApplyTableBody) error {
@@ -191,6 +194,28 @@ func CreateMaterial(param *Material) error {
 	_, err = stmt.Exec(param.Name, param.Unit, param.Provider, param.Description)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+// 经理审核, 修改status
+func ModifyStatus(param *VerifyBody) error {
+	mysql, err := db.GetDB()
+	if err != nil {
+		return err
+	}
+	defer mysql.Close()
+	sqlfmt := "update material_apply_table set status = ? where id = ?"
+	stmt, err := mysql.Prepare(sqlfmt)
+	if err != nil {
+		return err
+	}
+	result, err := stmt.Exec(param.Status, param.TableID)
+	if err != nil {
+		return err
+	}
+	if ok, _ := result.RowsAffected(); ok != 1{
+		return fmt.Errorf("modify database error")
 	}
 	return nil
 }

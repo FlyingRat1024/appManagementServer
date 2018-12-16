@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// 质检
 func WriteCheckTableHandler(ctx *gin.Context) {
 	var table material.CheckTableBody
 	var resBody response.ResBody

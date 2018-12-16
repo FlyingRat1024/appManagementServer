@@ -84,3 +84,26 @@ func ApplyDetailHandler(ctx *gin.Context) {
 	resBody.Param = result
 	return
 }
+
+// 经理审核
+func ApplyVerifyHandler(ctx *gin.Context) {
+	var body material.VerifyBody
+	var resBody response.ResBody
+	ctx.BindJSON(&body)
+	defer ctx.JSON(http.StatusOK, &resBody)
+	if body.TableID == 0 || body.Status == ""{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "parameter check failed"
+		return
+	}
+	err := material.ModifyStatus(&body)
+	if err != nil {
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "verify failed"
+		logger.Error("verify apply table failed, error message: ", err)
+		return
+	}
+	resBody.Status = status.StatusSuccess
+	resBody.Msg = "success"
+	return
+}
