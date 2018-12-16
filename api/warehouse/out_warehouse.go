@@ -14,7 +14,7 @@ func WriteOutWarehouseHandler(ctx *gin.Context) {
 	var table warehouse.OutWarehouseTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	if !warehouse.CheckOutWarehouseTableParam(&table) {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
@@ -37,7 +37,7 @@ func ConfirmOutWarehouseHandler(ctx *gin.Context) {
 	var reqBody warehouse.ConfirmOutWarehouseBody
 	var resBody response.ResBody
 	ctx.BindJSON(&reqBody)
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	if !warehouse.CheckConfirmOutWarehouseParam(&reqBody) {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
@@ -63,20 +63,20 @@ func OutWarehouseListHandler(ctx *gin.Context) {
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query database error"
-		ctx.JSON(http.StatusAccepted, &resBody)
+		ctx.JSON(http.StatusOK, &resBody)
 		logger.Error("query out warehouse list from database error, error message ", err)
 		return
 	}
 	resBody.Status = status.StatusSuccess
 	resBody.Msg = "success"
 	resBody.Param = result
-	ctx.JSON(http.StatusAccepted, &resBody)
+	ctx.JSON(http.StatusOK, &resBody)
 	return
 }
 
 func OutWarehouseDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	tableIDStr := ctx.Query("table_id")
 	if tableIDStr == "" {
 		resBody.Status = status.StatusFailed

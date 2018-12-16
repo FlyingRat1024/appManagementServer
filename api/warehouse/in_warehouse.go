@@ -14,7 +14,7 @@ func WriteInWarehouseHandler(ctx *gin.Context) {
 	var table warehouse.InWarehouseTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	if !warehouse.CheckInWarehouseTableParam(&table) {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
@@ -41,21 +41,21 @@ func InWarehouseListHandler(ctx *gin.Context) {
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query database error"
-		ctx.JSON(http.StatusAccepted, &resBody)
+		ctx.JSON(http.StatusOK, &resBody)
 		logger.Error("query in warehouse list from database error, error message ", err)
 		return
 	}
 	resBody.Status = status.StatusSuccess
 	resBody.Msg = "success"
 	resBody.Param = result
-	ctx.JSON(http.StatusAccepted, &resBody)
+	ctx.JSON(http.StatusOK, &resBody)
 	return
 }
 
 //入库单详细信息
 func InWarehouseDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	tableIDStr := ctx.Query("table_id")
 	if tableIDStr == "" {
 		resBody.Status = status.StatusFailed

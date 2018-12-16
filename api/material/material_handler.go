@@ -11,7 +11,7 @@ import (
 
 func MaterialListHandler(ctx *gin.Context) {
 	resBody := response.ResBody{}
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	jsonStr, err := material.GetMaterialList()
 	if err != nil {
 		resBody.Status = status.StatusFailed
@@ -28,7 +28,7 @@ func CreateMaterialHandler(ctx *gin.Context) {
 	resBody := response.ResBody{}
 	var reqBody material.Material
 	ctx.BindJSON(&reqBody)
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	if !material.CheckMaterialParam(&reqBody) {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check param error, please check your json string"

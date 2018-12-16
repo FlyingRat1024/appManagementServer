@@ -18,7 +18,7 @@ func WriteApplyTableHandler(ctx *gin.Context) {
 	var table material.ApplyTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckApplyTableParam(&table) {
 		resBody.Status = status.StatusFailed
@@ -42,7 +42,7 @@ func WriteApplyTableHandler(ctx *gin.Context) {
 func ApplyListhandler(ctx *gin.Context) {
 	userID := ctx.Query("user_id")
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	result, err := material.QueryApplyList(userID)
 	if err != nil {
 		resBody.Status = status.StatusFailed
@@ -59,7 +59,7 @@ func ApplyListhandler(ctx *gin.Context) {
 // 申请表详细信息
 func ApplyDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	tableIDStr := ctx.Query("table_id")
 	if tableIDStr == "" {
 		resBody.Status = status.StatusFailed

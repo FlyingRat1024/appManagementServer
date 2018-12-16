@@ -11,7 +11,7 @@ import (
 
 func GetUserInfo(ctx *gin.Context) {
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	userIdStr := ctx.Query("user_id")
 	userID, err := strconv.Atoi(userIdStr)
 	if err != nil {
@@ -34,7 +34,7 @@ func GetUserInfo(ctx *gin.Context) {
 func ModifyPassword(ctx *gin.Context) {
 	var resBody response.ResBody
 	var reqBody user.ModifyPasswordBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	err := ctx.BindJSON(&reqBody)
 	if err != nil {
 		resBody.Status = status.StatusFailed

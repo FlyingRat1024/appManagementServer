@@ -14,7 +14,7 @@ func WriteReceiveHandler(ctx *gin.Context) {
 	var table material.RecieveTableBody
 	var resBody response.ResBody
 	ctx.BindJSON(&table)
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckReceiveTableParam(&table) {
 		resBody.Status = status.StatusFailed
@@ -37,7 +37,7 @@ func WriteReceiveHandler(ctx *gin.Context) {
 // 领料单列表
 func ReceiveListhandler(ctx *gin.Context) {
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	userID := ctx.Query("user_id")
 	result, err := material.QueryReceiveTableList(userID)
 	if err != nil {
@@ -55,7 +55,7 @@ func ReceiveListhandler(ctx *gin.Context) {
 // 领料表详细信息
 func ReceiveDetailHandler(ctx *gin.Context) {
 	var resBody response.ResBody
-	defer ctx.JSON(http.StatusAccepted, &resBody)
+	defer ctx.JSON(http.StatusOK, &resBody)
 	tableIDStr := ctx.Query("table_id")
 	if tableIDStr == "" {
 		resBody.Status = status.StatusFailed
