@@ -10,6 +10,7 @@ Modification history
 package main
 
 import (
+	"androidappServer/api/message"
 	"androidappServer/api/permission"
 	"androidappServer/api/user"
 	"androidappServer/api/warehouse"
@@ -63,6 +64,10 @@ func main() {
 	userRouter := router.Group("/user")
 	userRouter.GET("/info", user.GetUserInfo)
 	userRouter.POST("/modify/password", user.ModifyPassword)
+	//message
+	messageRouter := router.Group("/message")
+	messageRouter.GET("/", message.MaterialWarningHandler)
+
 	err := router.Run(serverAddr)
 	if err != nil {
 		logger.Error("run server error!")

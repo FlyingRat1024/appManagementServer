@@ -1,19 +1,22 @@
 package material
 
 import (
-	"androidappServer/internal/material"
-	"androidappServer/internal/response"
-	"androidappServer/pkg/status"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
+)
+
+import (
+	"androidappServer/internal/material"
+	"androidappServer/internal/response"
+	"androidappServer/pkg/status"
 )
 
 func WriteBackTableHandler(ctx *gin.Context) {
 	var table material.BackTableBody
 	var resBody response.ResBody
 	err := ctx.BindJSON(&table)
-	if err != nil{
+	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
