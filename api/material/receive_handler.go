@@ -4,6 +4,7 @@ import (
 	"androidappServer/internal/material"
 	"androidappServer/internal/response"
 	"androidappServer/pkg/status"
+	"fmt"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -30,8 +31,8 @@ func WriteReceiveHandler(ctx *gin.Context) {
 	err = material.CreateReceiveTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "store receive table to database error"
-		logger.Error("store receive table to database error", err)
+		resBody.Msg = fmt.Sprintf("store receive table to database error, %s", err.Error())
+		logger.Error("store receive table to database error", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess
@@ -76,8 +77,8 @@ func ReceiveDetailHandler(ctx *gin.Context) {
 	result, err := material.QueryReceiveDetail(tableID)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "query detail failed"
-		logger.Error("query apply detail failed, error message: ", err)
+		resBody.Msg = fmt.Sprintf("query detail failed, %s", err.Error())
+		logger.Error("query apply detail failed, error message: ", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess

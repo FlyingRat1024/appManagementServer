@@ -4,6 +4,7 @@ import (
 	"androidappServer/internal/material"
 	"androidappServer/internal/response"
 	"androidappServer/pkg/status"
+	"fmt"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,7 +16,7 @@ func MaterialListHandler(ctx *gin.Context) {
 	jsonStr, err := material.GetMaterialList()
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "get material list failed"
+		resBody.Msg = fmt.Sprintf("get material list failed, %s", err.Error())
 		logger.Error("get material list failed, ", err.Error())
 		return
 	}
@@ -42,7 +43,7 @@ func CreateMaterialHandler(ctx *gin.Context) {
 	err = material.CreateMaterial(&reqBody)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "execute database success"
+		resBody.Msg = fmt.Sprintf("execute database failed, %s", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess

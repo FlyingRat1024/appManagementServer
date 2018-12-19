@@ -1,6 +1,7 @@
 package material
 
 import (
+	"fmt"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -34,8 +35,8 @@ func WriteApplyTableHandler(ctx *gin.Context) {
 	err = material.CreateApplyTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "store apply table to database error"
-		logger.Error("store apply table to database error, error message: ", err)
+		resBody.Msg = fmt.Sprintf("store apply table to database error, %s", err.Error())
+		logger.Error("store apply table to database error, error message: ", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess
@@ -52,7 +53,7 @@ func ApplyListhandler(ctx *gin.Context) {
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "query list failed"
-		logger.Error("query list failed, error message: ", err)
+		logger.Error("query list failed, error message: ", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess
@@ -80,8 +81,8 @@ func ApplyDetailHandler(ctx *gin.Context) {
 	result, err := material.QueryApplyDetail(tableID)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "query detail failed"
-		logger.Error("query apply detail failed, error message: ", err)
+		resBody.Msg = fmt.Sprintf("query detail failed, %s", err.Error())
+		logger.Error("query apply detail failed, error message: ", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess
@@ -109,8 +110,8 @@ func ApplyVerifyHandler(ctx *gin.Context) {
 	err = material.ModifyStatus(&body)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "verify failed"
-		logger.Error("verify apply table failed, error message: ", err)
+		resBody.Msg = fmt.Sprintf("verify failed, %s", err.Error())
+		logger.Error("verify apply table failed, error message: ", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess

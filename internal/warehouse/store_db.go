@@ -2,6 +2,7 @@ package warehouse
 
 import (
 	"androidappServer/db"
+	"fmt"
 )
 
 func CreateInWarehouseTable(table *InWarehouseTableBody) error {
@@ -29,6 +30,10 @@ func CreateInWarehouseTable(table *InWarehouseTableBody) error {
 		return err
 	}
 	for _, material := range table.Material {
+		if material.MaterialID == 0 || material.Num == 0{
+			conn.Rollback()
+			return fmt.Errorf("request param error, please check your json")
+		}
 		sqlfmt = "insert into in_material (in_id, material_id, number) values(?,?,?)"
 		stmt, err = mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -73,6 +78,10 @@ func CreateOutWarehouseTable(table *OutWarehouseTableBody) error {
 		return err
 	}
 	for _, material := range table.Material {
+		if material.MaterialID == 0 || material.Num == 0{
+			conn.Rollback()
+			return fmt.Errorf("request param error, please check your json")
+		}
 		sqlfmt = "insert into out_material (out_id, material_id, number) values(?,?,?)"
 		stmt, err = mysql.Prepare(sqlfmt)
 		if err != nil {

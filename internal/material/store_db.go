@@ -77,6 +77,10 @@ func CreateReceiveTable(body *RecieveTableBody) error {
 		return err
 	}
 	for _, material := range body.Material {
+		if material.MaterialID == 0 || material.Num == 0{
+			conn.Rollback()
+			return fmt.Errorf("request param error, please check your json")
+		}
 		sqlfmt = "insert into receive_material (table_id, material_id, receive_num) values(?,?,?)"
 		stmt, err = mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -119,6 +123,10 @@ func CreateBackTable(body *BackTableBody) error {
 		return err
 	}
 	for _, material := range body.Material {
+		if material.MaterialID == 0 || material.Num == 0{
+			conn.Rollback()
+			return fmt.Errorf("request param error, please check your json")
+		}
 		sqlfmt = "update receive_material set back_num = ? where table_id = ? and material_id = ?"
 		stmt, err = mysql.Prepare(sqlfmt)
 		if err != nil {
@@ -160,6 +168,10 @@ func CreateCheckTable(body *CheckTableBody) error {
 		return err
 	}
 	for _, material := range body.Material {
+		if material.MaterialID == 0 || material.Num == 0{
+			conn.Rollback()
+			return fmt.Errorf("request param error, please check your json")
+		}
 		sqlfmt = "update receive_material set check_num = ? where table_id = ? and material_id = ?"
 		stmt, err = mysql.Prepare(sqlfmt)
 		if err != nil {

@@ -3,6 +3,7 @@ package material
 import (
 	"androidappServer/db"
 	"androidappServer/pkg/utils"
+	"fmt"
 )
 
 // 查询申请列表
@@ -82,6 +83,9 @@ func QueryApplyDetail(tableID int) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if materialJson == "[]"{
+		return "", fmt.Errorf("can't find this table")
+	}
 	resultMap["material"] = materialJson
 	jsonStr, err := utils.ToString(resultMap)
 	return jsonStr, err
@@ -152,7 +156,7 @@ func QueryReceiveDetail(tableID int) (string, error) {
 		return "", err
 	}
 	sqlfmt = "select material.name, material.unit, material.provider, " +
-		"receive.receive_num, receive.back_num, receive.check_num " +
+		"receive.receive_num as num, receive.back_num, receive.check_num " +
 		"from (select material_id, receive_num, check_num, back_num from receive_material where id = ?) as receive " +
 		"JOIN material ON material.id = receive.material_id"
 	stmt1, err := mysql.Prepare(sqlfmt)
@@ -167,6 +171,9 @@ func QueryReceiveDetail(tableID int) (string, error) {
 	materialJson, err := utils.SqlRows2JsonList(rows1)
 	if err != nil {
 		return "", err
+	}
+	if materialJson == "[]"{
+		return "", fmt.Errorf("can't find this table")
 	}
 	resultMap["material"] = materialJson
 	jsonStr, err := utils.ToString(resultMap)

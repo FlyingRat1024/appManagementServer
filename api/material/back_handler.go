@@ -1,6 +1,7 @@
 package material
 
 import (
+	"fmt"
 	"github.com/donnie4w/go-logger/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -32,8 +33,8 @@ func WriteBackTableHandler(ctx *gin.Context) {
 	err = material.CreateBackTable(&table)
 	if err != nil {
 		resBody.Status = status.StatusFailed
-		resBody.Msg = "store back table to database error"
-		logger.Error("store back table to database error", err)
+		resBody.Msg = fmt.Sprintf("store back table to database error, %s", err.Error())
+		logger.Error("store back table to database error", err.Error())
 		return
 	}
 	resBody.Status = status.StatusSuccess

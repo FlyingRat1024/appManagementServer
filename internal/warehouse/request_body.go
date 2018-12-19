@@ -17,6 +17,6 @@ type ConfirmOutWarehouseBody struct {
 }
 
 type Common struct {
-	MaterialID int `json:"material_id"`
+	MaterialID int `json:"id"`
 	Num        int `json:"num"`
 }
