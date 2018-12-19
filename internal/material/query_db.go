@@ -68,7 +68,7 @@ func QueryApplyDetail(tableID int) (string, error) {
 		return "", err
 	}
 	sqlfmt = "select material.name, material.unit, material.provider, apply.num " +
-		"from (select material_id, num from apply_material where id = ?) as apply " +
+		"from (select material_id, num from apply_material where table_id = ?) as apply " +
 		"JOIN material ON material.id = apply.material_id"
 	stmt, err = mysql.Prepare(sqlfmt)
 	if err != nil {
@@ -157,7 +157,7 @@ func QueryReceiveDetail(tableID int) (string, error) {
 	}
 	sqlfmt = "select material.name, material.unit, material.provider, " +
 		"receive.receive_num as num, receive.back_num, receive.check_num " +
-		"from (select material_id, receive_num, check_num, back_num from receive_material where id = ?) as receive " +
+		"from (select material_id, receive_num, check_num, back_num from receive_material where table_id = ?) as receive " +
 		"JOIN material ON material.id = receive.material_id"
 	stmt1, err := mysql.Prepare(sqlfmt)
 	if err != nil {
