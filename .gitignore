@@ -1,4 +1,5 @@
 *.xml
 .idea/
+main
 androidappServer
 config.*
