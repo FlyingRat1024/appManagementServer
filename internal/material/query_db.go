@@ -15,7 +15,7 @@ func QueryApplyList(userID string) (string, error) {
 	defer mysql.Close()
 	if userID == "" {
 		sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as writer, " +
-			"verify as status, create_time from material_apply_table"
+			"status, create_time from material_apply_table"
 		stmt, err := mysql.Prepare(sqlfmt)
 		if err != nil {
 			return "", err
