@@ -49,6 +49,7 @@ func main() {
 	materialRouter.POST("/receive/write_table", material.WriteReceiveHandler)
 	materialRouter.GET("/receive", material.ReceiveListhandler)
 	materialRouter.GET("/receive/detail", material.ReceiveDetailHandler)
+	materialRouter.POST("/receive/verify", material.ReceiveVerifyHandler)
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
 	// warehouse

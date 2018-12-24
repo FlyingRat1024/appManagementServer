@@ -15,7 +15,7 @@ func QueryApplyList(userID string) (string, error) {
 	defer mysql.Close()
 	if userID == "" {
 		sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as writer, " +
-			"status, create_time from material_apply_table"
+			"verify as status, create_time from material_apply_table"
 		stmt, err := mysql.Prepare(sqlfmt)
 		if err != nil {
 			return "", err
@@ -53,7 +53,7 @@ func QueryApplyDetail(tableID int) (string, error) {
 	}
 	defer mysql.Close()
 	sqlfmt := "select id as table_id, (select employee_name from user where id = material_apply_table.user_id) as writer, " +
-		"verify as status, create_time from material_apply_table where id = ?"
+		"verify, status, create_time from material_apply_table where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err

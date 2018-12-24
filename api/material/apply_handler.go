@@ -107,7 +107,7 @@ func ApplyVerifyHandler(ctx *gin.Context) {
 		resBody.Msg = "parameter check failed"
 		return
 	}
-	err = material.ModifyStatus(&body)
+	err = material.ModifyApplyStatus(&body)
 	if err != nil {
 		resBody.Status = status.StatusFailed
 		resBody.Msg = fmt.Sprintf("verify failed, %s", err.Error())

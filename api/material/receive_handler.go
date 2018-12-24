@@ -86,3 +86,31 @@ func ReceiveDetailHandler(ctx *gin.Context) {
 	resBody.Param = result
 	return
 }
+
+// 经理审核
+func ReceiveVerifyHandler(ctx *gin.Context) {
+	var body material.VerifyBody
+	var resBody response.ResBody
+	err := ctx.BindJSON(&body)
+	if err != nil{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "check request parameter error"
+		return
+	}
+	defer ctx.JSON(http.StatusOK, &resBody)
+	if body.TableID == 0 || body.Status == ""{
+		resBody.Status = status.StatusFailed
+		resBody.Msg = "parameter check failed"
+		return
+	}
+	err = material.ModifyReceiveStatus(&body)
+	if err != nil {
+		resBody.Status = status.StatusFailed
+		resBody.Msg = fmt.Sprintf("verify failed, %s", err.Error())
+		logger.Error("verify receive table failed, error message: ", err.Error())
+		return
+	}
+	resBody.Status = status.StatusSuccess
+	resBody.Msg = "success"
+	return
+}
