@@ -14,13 +14,13 @@ import (
 func WriteCheckTableHandler(ctx *gin.Context) {
 	var table material.CheckTableBody
 	var resBody response.ResBody
+	defer ctx.JSON(http.StatusOK, &resBody)
 	err := ctx.BindJSON(&table)
 	if err != nil{
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
-	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckCheckTableParam(&table) {
 		resBody.Status = status.StatusFailed

@@ -91,6 +91,7 @@ func ReceiveDetailHandler(ctx *gin.Context) {
 func ReceiveVerifyHandler(ctx *gin.Context) {
 	var body material.VerifyBody
 	var resBody response.ResBody
+	resBody.Param = &body
 	err := ctx.BindJSON(&body)
 	if err != nil{
 		resBody.Status = status.StatusFailed
@@ -98,7 +99,7 @@ func ReceiveVerifyHandler(ctx *gin.Context) {
 		return
 	}
 	defer ctx.JSON(http.StatusOK, &resBody)
-	if body.TableID == 0 || body.Status == ""{
+	if body.TableID == 0 || body.Status == "" || body.Verifier == 0{
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "parameter check failed"
 		return

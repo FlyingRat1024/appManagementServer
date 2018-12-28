@@ -18,15 +18,16 @@ import (
 func WriteApplyTableHandler(ctx *gin.Context) {
 	var table material.ApplyTableBody
 	var resBody response.ResBody
+	defer ctx.JSON(http.StatusOK, &resBody)
 	err := ctx.BindJSON(&table)
 	if err != nil{
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
 	}
-	defer ctx.JSON(http.StatusOK, &resBody)
 	// check param
 	if !material.CheckApplyTableParam(&table) {
+		logger.Info("check request parameter error")
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "check request parameter error"
 		return
@@ -102,7 +103,7 @@ func ApplyVerifyHandler(ctx *gin.Context) {
 		return
 	}
 	defer ctx.JSON(http.StatusOK, &resBody)
-	if body.TableID == 0 || body.Status == ""{
+	if body.TableID == 0 || body.Status == "" || body.Verifier == 0{
 		resBody.Status = status.StatusFailed
 		resBody.Msg = "parameter check failed"
 		return
