@@ -16,17 +16,33 @@ func CreateInWarehouseTable(table *InWarehouseTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "insert into warehouse_in (writer, reissue, create_time, status) values(?,?,now(),'pending')"
+	sqlfmt := "insert into project (name) values(?)"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err
 	}
-	result, err := stmt.Exec(table.Writer, table.ReIssue)
+	result, err := stmt.Exec(table.ProjectName)
 	if err != nil {
+		return err
+	}
+	projectID, err := result.LastInsertId()
+	if err != nil{
+		return err
+	}
+	sqlfmt = "insert into warehouse_in (project_id, table_num, writer, reissue, create_time, status) values(?,?,?,?,now(),'未确认')"
+	stmt, err = mysql.Prepare(sqlfmt)
+	if err != nil {
+		conn.Rollback()
+		return err
+	}
+	result, err = stmt.Exec(projectID, table.TableNum, table.Writer, table.ReIssue)
+	if err != nil {
+		conn.Rollback()
 		return err
 	}
 	tableID, err := result.LastInsertId()
 	if err != nil {
+		conn.Rollback()
 		return err
 	}
 	for _, material := range table.Material {
@@ -64,17 +80,33 @@ func CreateOutWarehouseTable(table *OutWarehouseTableBody) error {
 	if err != nil {
 		return err
 	}
-	sqlfmt := "insert into warehouse_out (writer, create_time, status) values(?, now(), 'pending')"
+	sqlfmt := "insert into project (name) values(?)"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err
 	}
-	result, err := stmt.Exec(table.Writer)
+	result, err := stmt.Exec(table.ProjectName)
 	if err != nil {
+		return err
+	}
+	projectID, err := result.LastInsertId()
+	if err != nil{
+		return err
+	}
+	sqlfmt = "insert into warehouse_out (project_id, table_num, writer, create_time, status) values(?,?,?, now(), '未确认')"
+	stmt, err = mysql.Prepare(sqlfmt)
+	if err != nil {
+		conn.Rollback()
+		return err
+	}
+	result, err = stmt.Exec(projectID, table.TableNum, table.Writer)
+	if err != nil {
+		conn.Rollback()
 		return err
 	}
 	tableID, err := result.LastInsertId()
 	if err != nil {
+		conn.Rollback()
 		return err
 	}
 	for _, material := range table.Material {
@@ -107,7 +139,7 @@ func ConfirmOutWarehouseTable(body *ConfirmOutWarehouseBody) error {
 		return err
 	}
 	defer mysql.Close()
-	sqlfmt := "update warehouse_out set verify = ?, verify_time = now() where id = ?"
+	sqlfmt := "update warehouse_out set verifier = ?, status = '已确认', verify_time = now() where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return err

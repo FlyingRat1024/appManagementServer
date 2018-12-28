@@ -1,14 +1,18 @@
 package warehouse
 
 type InWarehouseTableBody struct {
-	Writer   int      `json:"writer"`
-	ReIssue  int      `json:"reissue"`
-	Material []Common `json:"material"`
+	TableNum    string   `json:"table_num"`
+	ProjectName string   `json:"project_name"`
+	Writer      int      `json:"writer"`
+	ReIssue     int      `json:"reissue"`
+	Material    []Common `json:"material"`
 }
 
 type OutWarehouseTableBody struct {
-	Writer   int      `json:"writer"`
-	Material []Common `json:"material"`
+	TableNum    string   `json:"table_num"`
+	ProjectName string   `json:"project_name"`
+	Writer      int      `json:"writer"`
+	Material    []Common `json:"material"`
 }
 
 type ConfirmOutWarehouseBody struct {

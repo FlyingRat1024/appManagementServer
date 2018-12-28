@@ -14,7 +14,7 @@ func QueryInWarehouseList(userID string) (string, error) {
 	}
 	defer mysql.Close()
 	if userID == ""{
-		sqlfmt := "select id as table_id, " +
+		sqlfmt := "select id as table_id, table_num, (select name from project where id = project_id) as project_name, " +
 			"(select employee_name from user where id = warehouse_in.writer) as writer, " +
 			"create_time, reissue from warehouse_in"
 		stmt, err := mysql.Prepare(sqlfmt)
@@ -29,7 +29,7 @@ func QueryInWarehouseList(userID string) (string, error) {
 		jsonStr, err := utils.SqlRows2JsonList(rows)
 		return jsonStr, err
 	}else {
-		sqlfmt := "select id as table_id, " +
+		sqlfmt := "select id as table_id, table_num, (select name from project where id = project_id) as project_name, " +
 			"(select employee_name from user where id = warehouse_in.writer) as writer, " +
 			"create_time, reissue from warehouse_in where writer = ?"
 		stmt, err := mysql.Prepare(sqlfmt)
@@ -54,9 +54,10 @@ func QueryInWarehouseDetail(tableID int) (string, error) {
 		return "", err
 	}
 	defer mysql.Close()
-	sqlfmt := "select id as table_id, " +
+	sqlfmt := "select id as table_id, table_num, (select name from project where id = project_id) as project_name, " +
 		"(select employee_name from user where id = warehouse_in.writer) as writer, " +
-		"create_time, reissue, status from warehouse_in where id = ?"
+		"create_time, reissue " +
+		"from warehouse_in where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
@@ -73,7 +74,7 @@ func QueryInWarehouseDetail(tableID int) (string, error) {
 	if len(resultMap) == 0{
 		return "", fmt.Errorf("can't find this table")
 	}
-	sqlfmt = "select material.name, material.unit, material.provider, in_material.number " +
+	sqlfmt = "select material.name, material.unit, material.size, material.provider, in_material.number " +
 		"from (select material_id, number from in_material where in_id = ?) as in_material " +
 		"JOIN material ON material.id = in_material.material_id"
 	stmt, err = mysql.Prepare(sqlfmt)
@@ -102,7 +103,7 @@ func QueryOutWarehouseList(userID string) (string, error) {
 	}
 	defer mysql.Close()
 	if userID == ""{
-		sqlfmt := "select id as table_id, " +
+		sqlfmt := "select id as table_id, table_num, (select name from project where id = project_id) as project_name," +
 			"(select employee_name from user where id = warehouse_out.writer) as writer, " +
 			"create_time from warehouse_out"
 		stmt, err := mysql.Prepare(sqlfmt)
@@ -117,7 +118,7 @@ func QueryOutWarehouseList(userID string) (string, error) {
 		jsonStr, err := utils.SqlRows2JsonList(rows)
 		return jsonStr, err
 	}else{
-		sqlfmt := "select id as table_id, " +
+		sqlfmt := "select id as table_id, table_num, (select name from project where id = project_id) as project_name, " +
 			"(select employee_name from user where id = warehouse_out.writer) as writer, " +
 			"create_time from warehouse_out where writer = ?"
 		stmt, err := mysql.Prepare(sqlfmt)
@@ -142,9 +143,10 @@ func QueryOutWarehouseDetail(tableID int) (string, error) {
 		return "", err
 	}
 	defer mysql.Close()
-	sqlfmt := "select id as table_id, " +
+	sqlfmt := "select id as table_id, table_num, (select name from project where id = project_id) as project_name," +
 		"(select employee_name from user where id = warehouse_out.writer) as writer, " +
-		"create_time, status from warehouse_out where id = ?"
+		"create_time, status, verify_time, (select employee_name from user where id = verifier) as verifier " +
+		"from warehouse_out where id = ?"
 	stmt, err := mysql.Prepare(sqlfmt)
 	if err != nil {
 		return "", err
@@ -161,7 +163,7 @@ func QueryOutWarehouseDetail(tableID int) (string, error) {
 	if len(resultMap) == 0{
 		return "", fmt.Errorf("can't find this table")
 	}
-	sqlfmt = "select material.name, material.unit, material.provider, out_material.number " +
+	sqlfmt = "select material.name, material.unit, material.size, material.provider, out_material.number " +
 		"from (select material_id, number from out_material where out_id = ?) as out_material " +
 		"JOIN material ON material.id = out_material.material_id"
 	stmt, err = mysql.Prepare(sqlfmt)
