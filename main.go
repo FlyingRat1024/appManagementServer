@@ -51,6 +51,7 @@ func main() {
 	materialRouter.GET("/receive/detail", material.ReceiveDetailHandler)
 	materialRouter.POST("/receive/verify", material.ReceiveVerifyHandler)
 	materialRouter.POST("/back/write_table", material.WriteBackTableHandler)
+	materialRouter.POST("/waste_back/write_table", material.WriteWasteBackTableHandler)
 	materialRouter.POST("/check/write_table", material.WriteCheckTableHandler)
 	// warehouse
 	warehouseRouter := router.Group("/warehouse")
